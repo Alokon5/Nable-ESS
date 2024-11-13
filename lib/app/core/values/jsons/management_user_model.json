@@ -1,0 +1,9 @@
+{
+    "name": "admin",
+    "email": "prakhar@gmail.com",
+    "uid": "",
+    "photoUrl": "",
+    "phoneNumber": "",
+    "emailVerified": true,
+    "roles": "MANAGEMENT"
+}

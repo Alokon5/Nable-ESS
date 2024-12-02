@@ -89,18 +89,19 @@ class DocumentsScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Image(
-                            height: 100.h,
-                            width: 100.w,
-                            image: AssetImage(ImageConstant.Logo),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 10.w),
+                      //   child: Align(
+                      //     alignment: Alignment.topLeft,
+                      //     child: Image(
+                      //       height: 100.h,
+                      //       width: 100.w,
+                      //       image: AssetImage(ImageConstant.Logo),
+                      //       fit: BoxFit.contain,
+                      //     ),
+                      //   ),
+                      // ),
+                      SizedBox(height: 100.h,),
                       Divider(),
                       //createUser
                       // Padding(
@@ -449,8 +450,12 @@ class DocumentsScreen extends StatelessWidget {
                                           ),
                                         ),
                                         InkWell(
-                                          onTap: () {
-                                            Get.to(() => SalaryScreen());
+                                          onTap: () async {
+                                            // Get.put(StaffProfileController());
+                                           profileStaffController.fetchSalaryData();
+                                            Get.to(() => SalaryScreen(),
+                                          
+                                            );
                                           },
                                           child: Card(
                                             color: ColorConstant

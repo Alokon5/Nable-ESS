@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison, body_might_complete_normally_nullable
 
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 // import 'package:flutter/foundation.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -9,13 +9,18 @@ import 'package:get_storage/get_storage.dart';
 
 import 'package:nable_ess/app/data/models/allEmployeesModel.dart';
 import 'package:nable_ess/app/data/models/allVideosModel/allVideoModel.dart';
+import 'package:nable_ess/app/data/models/deptModel/deptModel.dart';
 import 'package:nable_ess/app/data/models/designationModel/designationModel.dart';
+import 'package:nable_ess/app/data/models/leaveModels/lateEarlyModel.dart';
 import 'package:nable_ess/app/data/models/leaveModels/leaveListModel.dart';
 import 'package:nable_ess/app/data/models/login_model.dart';
 import 'package:nable_ess/app/data/models/requiestedLeaveModel/requiestedLeaveModel.dart';
 import 'package:nable_ess/app/data/models/staffList.dart';
+import 'package:nable_ess/app/data/models/staff_salary_model.dart';
 import 'package:nable_ess/app/data/models/userDetailsModel.dart';
 import 'package:nable_ess/app/data/models/user_model.dart';
+import 'package:nable_ess/app/data/models/weeklyOffPolicy/weeklyOffPolicy.dart';
+import 'package:nable_ess/app/data/models/weeklyShiftModel/weeklyShiftModel.dart';
 import 'package:nable_ess/app/data/providers/storage_provider.dart';
 
 import '../models/allUserDocList.dart';
@@ -24,30 +29,34 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class APIsProvider extends GetConnect {
-  // static const apiBaseUrl = "http://192.168.1.248:9000/";
-  // static const mediaBaseUrl = "http://192.168.1.248:9000";
-  static const apiBaseUrl = "https://ess.nablean.com/";
-  static const mediaBaseUrl = "https://ess.nablean.com";
-  //My local system api
-  // static const apiBaseUrl = "http://192.168.1.3:8000/";
-  // static const mediaBaseUrl = "http://192.168.1.3:8000";
-  // static const apiBaseUrl = "http://192.168.1.69:8000/";
-  // static const mediaBaseUrl = "http://192.168.1.69:8000";
+  static const apiBaseUrl = "http://192.168.29.39:8001/";
+  static const mediaBaseUrl = "http://192.168.29.39:8001";
+  // static const apiBaseUrl = "https://ess.nablean.com/";
+  // static const mediaBaseUrl = "https://ess.nablean.com";
 
   var createUser = StorageProvider();
 
   // user accout
+  static const updateLateEarlyRequest = "${apiBaseUrl}api/late_early_approval/";
   static const updateLeaveRequest = "${apiBaseUrl}api/show_leave/";
+  static const updateLateEarlySeen = "${apiBaseUrl}api/get_LateEarly/";
   static const logOut = "${apiBaseUrl}api/user/logout";
   static const getRequestedLeaves = "${apiBaseUrl}api/leaves_mageners_staff";
   static const allRequestedLeave = "${apiBaseUrl}api/all_leave_request";
   static const getDesignation = "${apiBaseUrl}api/designation";
+  static const getDepartment = "${apiBaseUrl}api/department";
+  static const getShift = "${apiBaseUrl}api/get_shift_time";
+  static const getWeek = "${apiBaseUrl}api/get_week_off";
   static const allVideos = "${apiBaseUrl}api/all_taskupload";
   static const getStaffViaManagerId = "${apiBaseUrl}api/managers_staff/";
   static const getleaveList = "${apiBaseUrl}api/show_leavelist_employee";
   static const leaveType = "${apiBaseUrl}api/leave_type";
   static const applyForleave = "${apiBaseUrl}api/leave";
   static const loginMangementUrl = "${apiBaseUrl}api/user/login";
+  
+
+  //salary api
+ static const getsalaryList = "${apiBaseUrl}api/get_salary";
 
   // Reset Password Apis
   static const resetEmailRequest = "${apiBaseUrl}reset_request";
@@ -75,7 +84,7 @@ class APIsProvider extends GetConnect {
   //Late Early post
   static const lateEarlyPost = "${apiBaseUrl}api/lateEarlyReason";
   static const getLateEarly = "${apiBaseUrl}api/getAllLateEarly";
-
+  static const getLateEarlyManager = "${apiBaseUrl}api/get_managerLateEarly";
   // Future<LateEary> getAllLateEarlyList(token) async {
   //   try {
   //     var header = {"Authorization": "token $token"};
@@ -84,33 +93,150 @@ class APIsProvider extends GetConnect {
   //   } catch (e) {}
   // }
 
-  Future<bool> postLateEarlyData(token, drop, date, time, reason) async {
-    print("under water");
-    print(reason);
-    printInfo(
-        info: "values:::::::$date,time:::::::::::$time,reason-------$reason");
-    try {
-      var body = {
-        'late_early': '$drop',
-        'date': '$date',
-        'time': '$time',
-        'reason': '$reason',
-        
+
+  //this is late early for manger
+  Future<List<LateEarlyModel>> getLateEarlyDataManger(token) async {
+  try {
+    // Send a
+    final headers = {
+        'Authorization': 'token $token' 
       };
-      final res = await post(
-          lateEarlyPost, headers: {"Authorization": "token $token"}, body);
-      if (res.statusCode == 201) {
-        EasyLoading.showSuccess("You have successful applied!");
-        return true;
+    final response = await http.get(Uri.parse(getLateEarlyManager),headers: headers);
+     if (response.statusCode == 200) {
+     
+      List<dynamic> data = json.decode(response.body);
+
+     
+      List<LateEarlyModel> lateEarlyList = List<LateEarlyModel>.from(
+        data.map((x) => LateEarlyModel.fromJson(x))
+      );
+
+      return lateEarlyList;  
+    } else {
+      throw Exception('Failed to load Late Early data');
+    }
+  } catch (e) {
+    
+    print("Error fetching data: $e");
+    return [];
+  }}
+
+//fetching late early data for staff
+  Future<List<LateEarlyModel>> getLateEarlyData(token) async {
+  try {
+    // Send a
+    final headers = {
+        'Authorization': 'token $token' 
+      };
+    final response = await http.get(Uri.parse(getLateEarly),headers: headers);
+     if (response.statusCode == 200) {
+     
+      List<dynamic> data = json.decode(response.body);
+
+     
+      List<LateEarlyModel> lateEarlyList = List<LateEarlyModel>.from(
+        data.map((x) => LateEarlyModel.fromJson(x))
+      );
+
+      return lateEarlyList;  
+    } else {
+      throw Exception('Failed to load Late Early data');
+    }
+  } catch (e) {
+    
+    print("Error fetching data: $e");
+    return [];
+  }}
+  //salary data
+   Future<List<StaffSalaryModel>> getSalaryList( token) async {
+    print("this is api ${token}");
+    try {
+      
+      final headers = {
+        'Authorization': 'token $token',
+      };
+
+      final response = await http.get(Uri.parse(getsalaryList), headers: headers);
+
+
+      if (response.statusCode == 200) {
+        
+        List<StaffSalaryModel> salaryList = staffSalaryModelFromJson(response.body);
+         print(salaryList);
+        return salaryList; 
       } else {
-        EasyLoading.showSuccess("Faild !");
-        return false;
+        throw Exception('Failed to load salary data');
       }
     } catch (e) {
-      EasyLoading.showSuccess("Timed out $e !");
-      return false;
+    
+      print('Error fetching salary data: $e');
+      return [];
     }
   }
+
+
+//late early submission
+  Future<bool> postLateEarlyData(
+       token,
+   drop,
+     date,
+     time,
+   reason,
+     attachment,
+) async {
+  print("under water");
+  print(reason);
+  printInfo(info: "values:::::::$date, time:::::::::::$time, reason-------$reason");
+
+  try {
+    var uri = Uri.parse(lateEarlyPost ); 
+    var request = http.MultipartRequest('POST', uri);
+
+
+    request.headers['Authorization'] = 'token $token';
+
+
+    request.fields['late_early'] = drop;
+    request.fields['date'] = date;
+    request.fields['time'] = time;
+    request.fields['reason'] = reason;
+
+    if (attachment != null) {
+      String fileExtension = attachment.path.split('.').last;
+      String fileName = attachment.path.split('/').last;
+
+      MediaType mediaType;
+      if (fileExtension == 'pdf') {
+        mediaType = MediaType('application', 'pdf');
+      } else {
+        mediaType = MediaType('image', 'jpeg');
+      }
+
+      var fileStream = http.ByteStream(attachment.openRead());
+      var fileLength = await attachment.length();
+      
+   
+      var multipartFile = http.MultipartFile(
+        'attachment', fileStream, fileLength,
+        filename: fileName, contentType: mediaType
+      );
+
+      request.files.add(multipartFile);
+    }
+
+    var response = await request.send();
+
+    if (response.statusCode == 201) {
+      EasyLoading.showSuccess("You have successfully applied!");
+      return true;
+    } else {
+      EasyLoading.showError("Failed!");
+      return false;
+    }
+  } catch (e) {
+    EasyLoading.showError("Timeout or error: $e");
+    return false;
+  }}
 
   Future<List<AllDocList>> getDocList(String? token) async {
     try {
@@ -295,6 +421,57 @@ class APIsProvider extends GetConnect {
     }
   }
 
+   Future<List<WeekOff>?> getWeekList(token) async {
+    try {
+      final res =
+          await get(getWeek, headers: {'Authorization': 'token $token'});
+      print("week --=-=-=-${res.body}");
+      List<dynamic> responseList = res.body;
+      List<WeekOff> listOfWeek = List<WeekOff>.from(
+        responseList.map((item) => WeekOff.fromJson(item)),
+      );
+
+      return listOfWeek;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+    Future<List<Shift>?> getShiftList(token) async {
+    try {
+      final res =
+          await get(getShift, headers: {'Authorization': 'token $token'});
+      print("shift --=-=-=-${res.body}");
+      List<dynamic> responseList = res.body;
+      List<Shift> listOfShift = List<Shift>.from(
+        responseList.map((item) => Shift.fromJson(item)),
+      );
+
+      return listOfShift;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  Future<List<DepartModel>?> getDeptList(token) async {
+    try {
+      final res =
+          await get(getDepartment, headers: {'Authorization': 'token $token'});
+      print("designation --=-=-=-${res.body}");
+      List<dynamic> responseList = res.body;
+      List<DepartModel> listOfLeave = List<DepartModel>.from(
+        responseList.map((item) => DepartModel.fromJson(item)),
+      );
+
+      return listOfLeave;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
   Future<List<RequestedLeaveModel>?> getAllRequestedLeave(token) async {
     try {
       print("api hitting");
@@ -331,6 +508,28 @@ class APIsProvider extends GetConnect {
     }
   }
 
+  Future<bool> requestLateApprovelApi(token, id) async {
+    print(id);
+    print("this is calling now api late approve");
+    try {
+      final res = await put(
+          updateLateEarlyRequest + id.toString(),
+          headers: {'Authorization': 'token $token'},
+          {"status": "Approved"});
+      print("response.statusCode -----${res.statusCode}");
+      print("response.body -----${res.body}");
+
+      if (res.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<bool> requestApprovelApi(token, id) async {
     print(id);
     print("this is calling now ");
@@ -359,6 +558,28 @@ class APIsProvider extends GetConnect {
     try {
       final res = await get(updateLeaveRequest + id.toString(),
           headers: {'Authorization': 'token $token'});
+          print("this is mang seen api");
+      print("response.statusCode -----${res.statusCode}");
+      print("response.body -----${res.body}");
+
+      if (res.statusCode == 200) {
+        return  true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+   Future<bool> seenLateApi(token, id) async {
+    print(id);
+
+    try {
+      final res = await get(updateLateEarlySeen + id.toString(),
+          headers: {'Authorization': 'token $token'});
+          print("this is late seen api");
       print("response.statusCode -----${res.statusCode}");
       print("response.body -----${res.body}");
 
@@ -377,6 +598,26 @@ class APIsProvider extends GetConnect {
     try {
       final res = await put(
           updateLeaveRequest + id.toString(),
+          headers: {'Authorization': 'token $token'},
+          {"status": "Declined"});
+      print("this is calling now decline");
+      print("response.statusCode -----${res.statusCode}");
+      print("response.body -----${res.body}");
+      if (res.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+   Future<bool> requestLateDeclineApi(token, id) async {
+    try {
+      final res = await put(
+          updateLateEarlyRequest + id.toString(),
           headers: {'Authorization': 'token $token'},
           {"status": "Declined"});
       print("this is calling now decline");
@@ -422,45 +663,76 @@ class APIsProvider extends GetConnect {
     }
   }
 
-  Future<bool> applyLeave(token, leaveTitle, leaveDescription, dateFrom, dateTo,
-      selecteLeaveType) async {
-    try {
-      var uri = Uri.parse(applyForleave);
-      var request = http.MultipartRequest('POST', uri);
-      request.headers['Authorization'] = 'token $token';
-      request.fields['title'] = leaveTitle;
-      request.fields['description'] = leaveDescription;
-      request.fields['from_date'] = dateFrom;
-      request.fields['to_date'] = dateTo;
-      request.fields['leave_type'] = selecteLeaveType.toString();
-      // image != null
-      //     ? request.files.add(
-      //         await http.MultipartFile.fromPath(
-      //           'profile_image',
-      //           image,
-      //           contentType: MediaType('profile_image', 'png'),
-      //         ),
-      //       )
-      //     : request.fields['profile_image'];
+  Future<bool> applyLeave(
+   token,
+  leaveTitle,
+   leaveDescription,
+   dateFrom,
+   dateTo,
+   selecteLeaveType,
+   attachment, // Accepts a File for the optional attachment
+) async {
+  try {
+    // Define the API endpoint
+    var uri = Uri.parse(applyForleave);
+    
+    // Create the multipart request
+    var request = http.MultipartRequest('POST', uri);
+    request.headers['Authorization'] = 'token $token';
+    
+    // Add form fields
+    request.fields['title'] = leaveTitle;
+    request.fields['description'] = leaveDescription;
+    request.fields['from_date'] = dateFrom;
+    request.fields['to_date'] = dateTo;
+    request.fields['leave_type'] = selecteLeaveType.toString();
+    
+    // Add file attachment if present
+    if (attachment != null) {
+      String fileName = attachment.path.split('/').last;
+      String fileExtension = attachment.path.split('.').last;
 
-      var response = await request.send();
-      var res = await response.stream.bytesToString();
-      print("responser ----${response.statusCode}");
-      print("responser res ----${res}");
-
-      if (response.statusCode == 200) {
-        // Request successful
-
-        return true;
+      // Determine MIME type based on file extension
+      MediaType mediaType;
+      if (fileExtension == 'pdf') {
+        mediaType = MediaType('application', 'pdf');
       } else {
-        // Request failed
-        return false;
+        mediaType = MediaType('image', 'jpeg'); // Adjust based on expected image types
       }
-    } catch (e) {
-      print(e);
+
+      var fileStream = http.ByteStream(attachment.openRead());
+      var fileLength = await attachment.length();
+
+      var multipartFile = http.MultipartFile(
+        'attachment', fileStream, fileLength,
+        filename: fileName,
+        contentType: mediaType,
+      );
+
+      // Add the file to the request
+      request.files.add(multipartFile);
+    }
+
+    // Send the request
+    var response = await request.send();
+
+    // Process the response
+    var responseBody = await response.stream.bytesToString();
+    print("Response Status Code: ${response.statusCode}");
+    print("Response Body: $responseBody");
+
+    if (response.statusCode == 200) {
+      // Request successful
+      return true;
+    } else {
+      // Request failed
       return false;
     }
+  } catch (e) {
+    print("Error in applyLeave: $e");
+    return false;
   }
+}
 
   Future<bool> editProfile(image, id, String? token, firstName, lastName,
       gender, phoneNumber, address) async {
@@ -704,7 +976,20 @@ class APIsProvider extends GetConnect {
       selectedDepartments,
       int destignation,
       address,
-      phoneNumber) async {
+      phoneNumber,
+      fatherName,
+  fatherNumber,
+  blood,
+    dob,
+    //  confirmpassword,
+  alternateNumber,
+homeAddress,
+    joinedDate,
+   selectMaritalStatus,
+    selectdWeek,
+    selectedShift,
+    dept
+      ) async {
     print("hit hua destignationId ----$destignation");
     print(selectedRole);
     CreateUser createUserManager = CreateUser(
@@ -716,7 +1001,19 @@ class APIsProvider extends GetConnect {
         phoneNumber: phoneNumber,
         gender: gender.toString(),
         designation: destignation.toString(),
-        userType: "Manager");
+        userType: "Manager",
+        fatherName: fatherName.toString(),
+    fatherHusbandMobile: fatherNumber.toString(),
+    bloodGroup: blood.toString(),
+    dob: dob.toString(),
+    phoneNumber2: alternateNumber.toString(),
+    homeAddress: homeAddress.toString(),
+    joiningDate: joinedDate.toString(),
+    department: dept.toString(),
+    shiftTime: selectedShift.toString(),
+    weekOff: selectdWeek.toString(),
+    maritalStatus: selectMaritalStatus.toString()
+        );
 
     String jsonCreateUser = createUserToJson(createUserManager);
 
@@ -755,79 +1052,93 @@ class APIsProvider extends GetConnect {
   }
 
   Future<bool> createNewStaff(
-      String? email,
-      password,
-      firstName,
-      lastName,
-      address,
-      phoneNumber,
-      gender,
-      selectedRole,
-      managerId,
-      designation) async {
-    print("manager Id ====$managerId");
-    print(selectedRole);
-    print("gender======${gender}");
+  String? email,
+  password,
+  firstName,
+  lastName,
+  address,
+  phoneNumber,
+  gender,
+  selectedRole,
+  managerId,
+  designation,
+  fatherName,
+  fatherNumber,
+  blood,
+    dob,
+    //  confirmpassword,
+  alternateNumber,
+homeAddress,
+    joinedDate,
+   selectMaritalStatus,
+    selectdWeek,
+    selectedShift,
+    dept
+) async {
+  print("manager Id ====$managerId");
+  print(selectedRole);
+  print("gender======${gender}");
+  print(selectdWeek);
+  print(selectedShift);
+  print(selectMaritalStatus);
 
-    // var data = {
-    //   "password": password,
-    //   "first_name": firstName,
-    //   "last_name": lastName,
-    //   "phone_number": phoneNumber,
-    //   "address": address,
-    //   "email": email,
-    //   "gender": gender.toString(),
-    //   "user_type": selectedRole.toString(),
-    //   "manager": managerId.toString(),
-    //     "designation": designation.toString(),
-    // };
-    CreateUser createUserManager = CreateUser(
-        email: email.toString(),
-        password: password.toString(),
-        firstName: firstName.toString(),
-        lastName: lastName.toString(),
-        gender: gender.toString(),
-        address: address.toString(),
-        phoneNumber: phoneNumber.toString(),
-        designation: designation.toString(),
-        userType: "Staff",
-        manager: managerId.toString());
+  // Update the `CreateUser` model to include `fatherName`.
+  CreateUser createUserManager = CreateUser(
+    email: email.toString(),
+    password: password.toString(),
+    firstName: firstName.toString(),
+    lastName: lastName.toString(),
+    gender: gender.toString(),
+    address: address.toString(),
+    phoneNumber: phoneNumber.toString(),
+    designation: designation.toString(),
+    userType: "Staff",
+    manager: managerId.toString(),
+    fatherName: fatherName.toString(),
+    fatherHusbandMobile: fatherNumber.toString(),
+    bloodGroup: blood.toString(),
+    dob: dob.toString(),
+    phoneNumber2: alternateNumber.toString(),
+    homeAddress: homeAddress.toString(),
+    joiningDate: joinedDate.toString(),
+    department: dept.toString(),
+    shiftTime: selectedShift.toString(),
+    weekOff: selectdWeek.toString(),
+    maritalStatus: selectMaritalStatus.toString()
+    
+  );
 
-    String jsonCreateUser = createUserToJson(createUserManager);
+  print(createUserManager);
 
-    try {
-      var res = await post(createUserUrl, jsonCreateUser);
-      print("response --=----=${res.body}");
+  // Convert to JSON
+  String jsonCreateUser = createUserToJson(createUserManager);
 
-      if (res.statusCode == 201) {
-        EasyLoading.showSuccess(
-          "Created User Successful",
-        );
-        Get.back();
-        return true;
-      } else if (res.body["email"] != null) {
-        var message = res.body["email"];
-        print("message-------$message");
+  try {
+    // Make the POST request
+    var res = await post(createUserUrl, jsonCreateUser);
+    print("response --=----=${res.body}");
 
-        EasyLoading.showError(
-            message.toString() ?? " Failed to create new user");
+    if (res.statusCode == 201) {
+      EasyLoading.showSuccess("Created User Successful");
+      Get.back();
+      return true;
+    } else if (res.body["email"] != null) {
+      var message = res.body["email"];
+      print("message-------$message");
 
-        return false;
-      } else {
-        EasyLoading.showError(
-            res.body["password"].toString() ?? " Failed to create new user");
-        return false;
-      }
-    } catch (e) {
-      print("e-=--=--=-=-=-$e");
-      // EasyLoading.showError(
-      //   e.toString(),
-      // );
-      EasyLoading.showError("Connection Timed out ");
+      EasyLoading.showError(message.toString() ?? "Failed to create new user");
+      return false;
+    } else {
+      EasyLoading.showError(res.body["password"].toString() ?? "Failed to create new user");
       return false;
     }
-    // return false;
+  } catch (e) {
+    print("e-=--=--=-=-=-$e");
+    EasyLoading.showError("Connection Timed out");
+    return false;
   }
+}
+
 
   Future<StaffListModel> fetchStaffs(String? token) async {
     print(token);

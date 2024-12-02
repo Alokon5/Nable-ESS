@@ -15,10 +15,12 @@ class StaffController extends GetxController {
   }
 
   List<Widget> widgetOptions = <Widget>[
+    CheckInViewStaff(),
+    StaffVideoListing(),
     HomeStaff(),
     // UploadVideoScreen(),
-    StaffVideoListing(),
-    CheckInViewStaff(),
+    
+    
     DocumentsScreen(),
   ].obs;
 }

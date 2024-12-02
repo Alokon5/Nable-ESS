@@ -6,9 +6,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:get/get.dart';
 import 'package:nable_ess/app/data/models/allEmployeesModel.dart';
+import 'package:nable_ess/app/data/models/deptModel/deptModel.dart';
 import 'package:nable_ess/app/data/models/designationModel/designationModel.dart';
 
 import 'package:nable_ess/app/data/models/user_model.dart';
+import 'package:nable_ess/app/data/models/weeklyOffPolicy/weeklyOffPolicy.dart';
+import 'package:nable_ess/app/data/models/weeklyShiftModel/weeklyShiftModel.dart';
 import 'package:nable_ess/app/data/providers/apis_provider.dart';
 import 'package:nable_ess/app/data/providers/storage_provider.dart';
 import 'package:nable_ess/app/modules/management/usersDetails/controller.dart';
@@ -25,9 +28,18 @@ class HomeManagementController extends GetxController {
   final TextEditingController lastName = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+  final TextEditingController fatherName = TextEditingController();
+  final TextEditingController fatherNumber= TextEditingController();
+  final TextEditingController bloodController = TextEditingController();
+  final TextEditingController dobController = TextEditingController();
+   final TextEditingController confirmpassword = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
+  final TextEditingController alternateNumberController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController homeAddressController = TextEditingController();
+  final TextEditingController joinedDateController =TextEditingController();
   late VideoPlayerController videoController;
+  
 
   // initializeVideo(url) async {
   //   videoController = VideoPlayerController.networkUrl(url);
@@ -52,7 +64,13 @@ class HomeManagementController extends GetxController {
   var videoList = <Video>[].obs;
   var allVideos = <AllVideosData>[].obs;
   var desgnationList = <DesignationModel>[].obs;
+  var deptList = <DepartModel>[].obs;
+  var shiftTimeList = <Shift>[].obs;
+  var weekOffPolicyList = <WeekOff>[].obs;
   var selectedDesignation = 3.obs;
+  var selectedDept = 3.obs;
+  var selectedShift = 0.obs;
+  var selectdWeek = 0.obs;
   var videoLength = "".obs;
   var allMagngerList = <Datum>[].obs;
   var allEmployeesList = <Datum>[].obs;
@@ -94,6 +112,34 @@ class HomeManagementController extends GetxController {
     await getEmplyeesDetails();
     await getDesignation();
     await getAllMnager();
+    await getDept();
+    await getShiftTime();
+   await getWeekPolicy();
+  }
+
+
+
+
+   getWeekPolicy() async {
+    print("enter controller");
+   var status = await apIsProvider.getWeekList(user[0].token);
+    if (status!.length.toInt() != 0) {
+      weekOffPolicyList.assignAll(status);
+      selectdWeek.value = weekOffPolicyList[0].id!.toInt();
+
+      print("dept List --=---=-${weekOffPolicyList.isEmpty}");
+    }
+  }
+
+  getShiftTime() async {
+    // print("enter controller");
+   var status = await apIsProvider.getShiftList(user[0].token);
+    if (status!.length.toInt() != 0) {
+      shiftTimeList.assignAll(status);
+      selectedShift.value = shiftTimeList[0].id!.toInt();
+
+      print("dept List --=---=-${shiftTimeList.isEmpty}");
+    }
   }
 
   getAllEmployees() async {
@@ -158,6 +204,28 @@ class HomeManagementController extends GetxController {
         ),
       ];
 
+//Martial status 
+      var selectMaritalStatus = "Married".obs;
+  List<DropdownMenuItem<String>> get maritalItems => const [
+        DropdownMenuItem<String>(
+          value: "Married",
+          child: Text("Married"),
+        ),
+        DropdownMenuItem<String>(
+          value: "Unmarried",
+          child: Text("Unmarried"),
+        ),
+        DropdownMenuItem<String>(
+          value: "Divorced",
+          child: Text("Divorced"),
+        ),
+        DropdownMenuItem<String>(
+          value: "Widowed",
+          child: Text("Widowed"),
+        ),
+      ];
+
+
   // Roles list
   var selectedRole = "Manager".obs;
   List<DropdownMenuItem<String>> get roleItems => const [
@@ -171,6 +239,8 @@ class HomeManagementController extends GetxController {
         ),
       ];
 
+
+
   Future getDesignation() async {
     var status = await apIsProvider.getDesignationList(user[0].token);
     if (status!.length.toInt() != 0) {
@@ -181,7 +251,22 @@ class HomeManagementController extends GetxController {
     }
   }
 
+  
+
+  
+  Future getDept() async {
+    var status = await apIsProvider.getDeptList(user[0].token);
+    if (status!.length.toInt() != 0) {
+      deptList.assignAll(status);
+      selectedDept.value = deptList[0].id!.toInt();
+
+      print("dept List --=---=-${deptList.isEmpty}");
+    }
+  }
+
   void creatManager() async {
+
+    
     isLoading.value = true;
     var status = await apIsProvider.createNewManager(
         email.text,
@@ -191,10 +276,26 @@ class HomeManagementController extends GetxController {
         selectedGender,
         selectedDate,
         selectedRole,
-        selectedDepartments,
+        selectedDept,
         selectedDesignation.toInt(),
         addressController.text,
-        mobileNumberController.text);
+        mobileNumberController.text,
+        
+        fatherName.text,
+         fatherNumber.text,
+       bloodController.text,
+    dobController.text,
+    
+    //  confirmpassword.text,
+  
+    alternateNumberController.text,
+
+    homeAddressController.text,
+    joinedDateController.text,
+    selectMaritalStatus.value,
+    selectdWeek.value,
+    selectedShift.value,
+    selectedDept.value);
     if (status) {
       email.clear();
       password.clear();
@@ -209,7 +310,11 @@ class HomeManagementController extends GetxController {
     isLoading.value = false;
   }
 
-  void createStaff() async {
+  void createStaffManagment() async {
+    print("${selectMaritalStatus} ");
+    print("${selectdWeek} ");
+    print("${selectedShift} ");
+    // print("${selectMaritalStatus} ");
     isLoading.value = true;
     var status = await apIsProvider.createNewStaff(
         email.text,
@@ -221,7 +326,23 @@ class HomeManagementController extends GetxController {
         selectedGender,
         selectedRole,
         selecteMangerID,
-        selectedDesignation.toInt());
+        selectedDesignation.toInt(),
+        fatherName.text,
+         fatherNumber.text,
+       bloodController.text,
+    dobController.text,
+    
+    //  confirmpassword.text,
+  
+    alternateNumberController.text,
+
+    homeAddressController.text,
+    joinedDateController.text,
+    selectMaritalStatus.value,
+    selectdWeek.value,
+    selectedShift.value,
+    selectedDept.value
+        );
     if (status) {
       email.clear();
       password.clear();

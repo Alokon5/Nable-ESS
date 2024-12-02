@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:nable_ess/app/modules/management/base/controller.dart';
+import 'package:nable_ess/app/modules/management/documents/allSalary.dart';
 import 'package:nable_ess/app/modules/management/documents/document.dart';
+import 'package:nable_ess/app/modules/management/documents/lateEarly/lateEarly.dart';
 import 'package:nable_ess/app/modules/management/profile/controller.dart';
 import 'package:nable_ess/app/modules/management/profile/widgets/view/manage_leave_management.dart';
-
+import 'package:badges/badges.dart' as badges;
 import 'package:nable_ess/app/routes/route.dart';
 
 import '../../../core/values/colors.dart';
@@ -16,7 +18,7 @@ import '../../../data/providers/apis_provider.dart';
 class DocumentsScreen extends StatelessWidget {
   DocumentsScreen({super.key});
 
-  final profileManageMent = Get.put(ProfileManagementController());
+  final profileManageMent = Get.find<ProfileManagementController>();
 
   @override
   Widget build(BuildContext context) {
@@ -78,18 +80,18 @@ class DocumentsScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Image(
-                            height: 100.h,
-                            width: 100.w,
-                            image: AssetImage(ImageConstant.Logo),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 10.w),
+                      //   child: Align(
+                      //     alignment: Alignment.topLeft,
+                      //     child: Image(
+                      //       height: 100.h,
+                      //       width: 100.w,
+                      //       image: AssetImage(ImageConstant.Logo),
+                      //       fit: BoxFit.contain,
+                      //     ),
+                      //   ),
+                      // ),
                       Divider(),
                       //createUser
                       // Padding(
@@ -352,31 +354,35 @@ class DocumentsScreen extends StatelessWidget {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                // Badge(
-                                                //   position:
-                                                //       BadgePosition.topEnd(
-                                                //           top: 2.h, end: 2.h),
-                                                //   showBadge: profileManageMent
-                                                //           .newRequestList
-                                                //           .length !=
-                                                //       0,
-                                                //   child: Container(
-                                                //     width: 150.w,
-                                                //     height: 140.h,
-                                                //     child: Center(
-                                                //         child: Text("Leave",
-                                                //             style: Theme.of(
-                                                //                     context)
-                                                //                 .textTheme
-                                                //                 .titleMedium)),
-                                                //   ),
-                                                // ),
+                                                badges.Badge(
+                                                  // badgeContent: Text("${profileManageMent
+                                                  //         .newRequestList
+                                                  //         .length}"),
+                                                  position:
+                                                      BadgePosition.topEnd(
+                                                          top: 2.h, end: 2.h),
+                                                  showBadge: profileManageMent
+                                                          .newRequestList
+                                                          .isNotEmpty,
+                                                  child: Container(
+                                                    width: 150.w,
+                                                    height: 140.h,
+                                                    child: Center(
+                                                        child: Text("Leave",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleMedium)),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ),
                                         ),
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: () {
+                                            Get.to(LateEarlyAllUsers());
+                                          },
                                           child: Card(
                                             color: ColorConstant
                                                 .complimentaryLight,
@@ -389,15 +395,27 @@ class DocumentsScreen extends StatelessWidget {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Container(
-                                                  width: 150.w,
-                                                  height: 140.h,
-                                                  child: Center(
-                                                      child: Text("Late/Early",
-                                                          style: Theme.of(
-                                                                  context)
-                                                              .textTheme
-                                                              .titleMedium)),
+                                                badges.Badge(
+                                                  //  badgeContent: Text("${profileManageMent
+                                                  //         .newRequestLateList
+                                                  //         .length}"),
+                                                  position:
+                                                      BadgePosition.topEnd(
+                                                          top: 2.h, end: 2.h),
+                                                  showBadge: profileManageMent
+                                                          .newRequestLateList
+                                                          .length != 0
+                                                  ,
+                                                  child: Container(
+                                                    width: 150.w,
+                                                    height: 140.h,
+                                                    child: Center(
+                                                        child: Text("Late/Early",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleMedium)),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -444,7 +462,10 @@ class DocumentsScreen extends StatelessWidget {
                                           ),
                                         ),
                                         InkWell(
-                                          onTap: () async {},
+                                          onTap: () async {
+                                            Get.to(()=>AllSalaryPage());
+                                          
+                                          },
                                           child: Card(
                                             color: ColorConstant
                                                 .complimentaryLight,

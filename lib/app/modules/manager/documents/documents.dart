@@ -82,18 +82,18 @@ class DocumentsScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Image(
-                            height: 100.h,
-                            width: 100.w,
-                            image: AssetImage(ImageConstant.Logo),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 10.w),
+                      //   child: Align(
+                      //     alignment: Alignment.topLeft,
+                      //     child: Image(
+                      //       height: 100.h,
+                      //       width: 100.w,
+                      //       image: AssetImage(ImageConstant.Logo),
+                      //       fit: BoxFit.contain,
+                      //     ),
+                      //   ),
+                      // ),
                       Divider(),
                       //createUser
                       // Padding(
@@ -186,7 +186,9 @@ class DocumentsScreen extends StatelessWidget {
                                         ),
                                         InkWell(
                                           onTap: () {
-                                            Get.to(() => LateEarlyScreenM());
+                                            // Get.to(() => LateEarlyScreenM());
+                                              Get.toNamed(AppRoutes.lateEarlyBase);
+                                              print("tap on late/early");
                                           },
                                           child: Card(
                                             color: ColorConstant
@@ -200,15 +202,27 @@ class DocumentsScreen extends StatelessWidget {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Container(
-                                                  width: 150.w,
-                                                  height: 140.h,
-                                                  child: Center(
-                                                      child: Text("Late/Early",
-                                                          style: Theme.of(
-                                                                  context)
-                                                              .textTheme
-                                                              .titleMedium)),
+                                                badges.Badge(
+                                                   badgeContent: Text("${profileManageMent
+                                                          .newRequestLateList
+                                                          .length}"),
+                                                  position:
+                                                      badges.BadgePosition.topEnd(
+                                                          top: 2.h, end: 2.h),
+                                                  showBadge: profileManageMent
+                                                          .newRequestLateList
+                                                          .length != 0
+                                                  ,
+                                                  child: Container(
+                                                    width: 150.w,
+                                                    height: 140.h,
+                                                    child: Center(
+                                                        child: Text("Late/Early",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleMedium)),
+                                                  ),
                                                 ),
                                               ],
                                             ),

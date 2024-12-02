@@ -351,23 +351,24 @@ class StaffLeaveForm extends StatelessWidget {
                                           staffProfileController.pdfPath.value);
                                 },
                                 child:
-                                    staffProfileController.pdfName.toString() !=
-                                                "" ||
-                                            staffProfileController.imageName
-                                                    .toString() !=
-                                                ''
-                                        ? (staffProfileController.pdfName
-                                                    .toString() !=
-                                                ""
-                                            ? Text(staffProfileController
-                                                .pdfName.value)
-                                            : Text(
+                                    staffProfileController.selectedImage.value != null ?
+                                                // "" ||
+                                        //     staffProfileController.imageName
+                                        //             .toString() !=
+                                        //         ''
+                                        // ? (staffProfileController.pdfName
+                                        //             .toString() !=
+                                        //         ""
+                                        //     ? Text(staffProfileController
+                                        //         .pdfName.value)
+                                        //     
+                                         Text(
                                                 staffProfileController
                                                     .truncateFileName(
                                                         staffProfileController
                                                             .imageName.value,
                                                         17),
-                                              ))
+                                              )
                                         : Text("File not selected yet."))
                           ],
                         );

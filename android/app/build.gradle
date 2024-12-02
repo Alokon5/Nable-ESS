@@ -22,6 +22,7 @@ android {
     ndkVersion flutter.ndkVersion
 
     lintOptions {
+          disable 'Deprecation', 'Unchecked'
         warningsAsErrors true
         lintConfig rootProject.file("lint.xml")
     }

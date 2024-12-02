@@ -7,6 +7,9 @@ import 'package:nable_ess/app/modules/management/profile/bindings.dart';
 import 'package:nable_ess/app/modules/management/profile/profile.dart';
 import 'package:nable_ess/app/modules/management/usersDetails/binding.dart';
 import 'package:nable_ess/app/modules/manager/manageLeave/base/base.dart';
+import 'package:nable_ess/app/modules/manager/managerLateEarly/base/base.dart';
+import 'package:nable_ess/app/modules/manager/managerLateEarly/base/binding.dart';
+// import 'package:nable_ess/app/modules/manager/managerLateEarly/binding.dart';
 import 'package:nable_ess/app/modules/manager/profile/checkList.dart';
 import 'package:nable_ess/app/modules/manager/profile/edit_profile.dart';
 import 'package:nable_ess/app/modules/manager/videos/binding.dart';
@@ -193,6 +196,12 @@ class GetPages {
       transition: Transition.leftToRight,
     ),
 
+
+   GetPage(
+        name: AppRoutes.lateEarlyBase,
+        page: () => LateEarlybaseView(),
+        // binding: LateEarlyNotificationBinding(),
+      ),
     // Staff
     GetPage(
       name: AppRoutes.staffBase,

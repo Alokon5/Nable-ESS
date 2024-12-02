@@ -498,6 +498,8 @@ class StaffHomeController extends GetxController {
     }
   }
 
+  
+
   showLocationPermissionDeniedDialog() async {
     await Get.dialog(
       AlertDialog(

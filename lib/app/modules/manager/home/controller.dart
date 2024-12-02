@@ -10,8 +10,11 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:nable_ess/app/data/models/deptModel/deptModel.dart';
 import 'package:nable_ess/app/data/models/staffList.dart';
 import 'package:nable_ess/app/data/models/user_model.dart';
+import 'package:nable_ess/app/data/models/weeklyOffPolicy/weeklyOffPolicy.dart';
+import 'package:nable_ess/app/data/models/weeklyShiftModel/weeklyShiftModel.dart';
 import 'package:nable_ess/app/data/providers/storage_provider.dart';
 import 'package:nable_ess/app/modules/manager/videos/controller.dart';
 import 'package:path_provider/path_provider.dart';
@@ -37,7 +40,16 @@ class HomeManagerController extends GetxController {
   final TextEditingController mobileNumberController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
-
+   final TextEditingController fatherName = TextEditingController();
+    final TextEditingController fatherNumber= TextEditingController();
+  final TextEditingController bloodController = TextEditingController();
+  final TextEditingController dobController = TextEditingController();
+   final TextEditingController confirmpassword = TextEditingController();
+  // final TextEditingController mobileNumberController = TextEditingController();
+  final TextEditingController alternateNumberController = TextEditingController();
+  // final TextEditingController addressController = TextEditingController();
+  final TextEditingController homeAddressController = TextEditingController();
+  final TextEditingController joinedDateController =TextEditingController();
   final TextEditingController videoTitleController = TextEditingController();
   final TextEditingController videoDescriptionController =
       TextEditingController();
@@ -58,10 +70,18 @@ class HomeManagerController extends GetxController {
   var yourVideoList = <Video>[].obs;
   var allEmployeesList = <Datum>[].obs;
   var staffsListed = <Staff>[].obs;
-
+  //  var desgnationList = <DesignationModel>[].obs;
+  var deptList = <DepartModel>[].obs;
+  var shiftTimeList = <Shift>[].obs;
+  var weekOffPolicyList = <WeekOff>[].obs;
+  // var selectedDesignation = 3.obs;
+   var selecteMangerID = 0.obs;
+  var selectedDept = 3.obs;
+  var selectedShift = 1.obs;
+  var selectdWeek = 1.obs;
   var checkInList = <CheckIn>[].obs;
   var chekOutList = <CheckOut>[].obs;
-
+  var allMagngerList = <Datum>[].obs;
   var isChekInDateToday = false.obs;
   var isChekOutDateToday = false.obs;
   var checkInTimeNewStr = "".obs;
@@ -116,6 +136,128 @@ class HomeManagerController extends GetxController {
     String formattedSecond = second.toString().padLeft(2, '0');
 
     return '$formattedHour:$formattedMinute:$formattedSecond $period';
+  }
+
+
+  //create manager form dropdown
+  var selectedDepartments = "department 1".obs;
+  List<DropdownMenuItem<String>> get departmentItems => const [
+        DropdownMenuItem<String>(
+          value: "department 1",
+          child: Text("Department 1"),
+        ),
+        DropdownMenuItem<String>(
+          value: "department 2",
+          child: Text("Department 2"),
+        ),
+        DropdownMenuItem<String>(
+          value: "department 3",
+          child: Text("Department 3"),
+        ),
+      ];
+
+  // Gender list
+  var selectedGender = "Male".obs;
+  List<DropdownMenuItem<String>> get genderItems => const [
+        DropdownMenuItem<String>(
+          value: "Male",
+          child: Text("Male"),
+        ),
+        DropdownMenuItem<String>(
+          value: "Female",
+          child: Text("Female"),
+        ),
+      ];
+
+//Martial status 
+      var selectMaritalStatus = "Married".obs;
+  List<DropdownMenuItem<String>> get maritalItems => const [
+        DropdownMenuItem<String>(
+          value: "Married",
+          child: Text("Married"),
+        ),
+        DropdownMenuItem<String>(
+          value: "Unmarried",
+          child: Text("Unmarried"),
+        ),
+        DropdownMenuItem<String>(
+          value: "Divorced",
+          child: Text("Divorced"),
+        ),
+        DropdownMenuItem<String>(
+          value: "Widowed",
+          child: Text("Widowed"),
+        ),
+      ];
+
+
+  // Roles list
+  var selectedRole = "Manager".obs;
+  List<DropdownMenuItem<String>> get roleItems => const [
+        DropdownMenuItem<String>(
+          value: "Manager",
+          child: Text("Manager"),
+        ),
+        DropdownMenuItem<String>(
+          value: "Staff",
+          child: Text("Staff"),
+        ),
+      ];
+//end 
+
+
+     getWeekPolicy() async {
+    print("enter controller");
+   var status = await apIsProvider.getWeekList(user[0].token);
+    if (status!.length.toInt() != 0) {
+      weekOffPolicyList.assignAll(status);
+      selectdWeek.value = weekOffPolicyList[0].id!.toInt();
+
+      print("dept List --=---=-${weekOffPolicyList.isEmpty}");
+    }
+  }
+
+
+  getAllMnager() async {
+    isLoading.value = true;
+    var employees = await apIsProvider.fetchAllManagers(user[0].token);
+
+    AllEmployeesModel? employeeo;
+
+    if (employees.data!.length == 0) {
+      EasyLoading.showSuccess(
+        "Employees not found",
+      );
+    } else {
+      employeeo = employees;
+      allMagngerList.assignAll(employeeo.data!);
+
+      // print("allEmployeesList[0].email------${allEmployeesList[0].email}");
+    }
+
+    isLoading.value = false;
+  }
+
+  getShiftTime() async {
+    // print("enter controller");
+   var status = await apIsProvider.getShiftList(user[0].token);
+    if (status!.length.toInt() != 0) {
+      shiftTimeList.assignAll(status);
+      selectedShift.value = shiftTimeList[0].id!.toInt();
+
+      print("dept List --=---=-${shiftTimeList.isEmpty}");
+    }
+  }
+
+
+    Future getDept() async {
+    var status = await apIsProvider.getDeptList(user[0].token);
+    if (status!.length.toInt() != 0) {
+      deptList.assignAll(status);
+      selectedDept.value = deptList[0].id!.toInt();
+
+      print("dept List --=---=-${deptList.isEmpty}");
+    }
   }
 
   Future getDesignation() async {
@@ -442,6 +584,10 @@ class HomeManagerController extends GetxController {
     await getAllManagers();
     await getDesignation();
     await getStaffs();
+        await getDept();
+    await getShiftTime();
+   await getWeekPolicy();
+   await getAllManagers();
     _scheduleSetup();
     _updateDateAutomatically();
     super.onInit();
@@ -464,26 +610,26 @@ class HomeManagerController extends GetxController {
     isLoading.value = false;
   }
 
-  var selectedGender = "Male".obs;
-  List<DropdownMenuItem<String>> get genderItems => [
-        DropdownMenuItem<String>(
-          value: "Male",
-          child: Text("Male"),
-        ),
-        DropdownMenuItem<String>(
-          value: "Female",
-          child: Text("Female"),
-        ),
-      ];
+  // var selectedGender = "Male".obs;
+  // List<DropdownMenuItem<String>> get genderItems => [
+  //       DropdownMenuItem<String>(
+  //         value: "Male",
+  //         child: Text("Male"),
+  //       ),
+  //       DropdownMenuItem<String>(
+  //         value: "Female",
+  //         child: Text("Female"),
+  //       ),
+  //     ];
 
-  // Roles list
-  var selectedRole = "Staff".obs;
-  List<DropdownMenuItem<String>> get roleItems => [
-        DropdownMenuItem<String>(
-          value: "Staff",
-          child: Text("Staff"),
-        ),
-      ];
+  // // Roles list
+  // var selectedRole = "Staff".obs;
+  // List<DropdownMenuItem<String>> get roleItems => [
+  //       DropdownMenuItem<String>(
+  //         value: "Staff",
+  //         child: Text("Staff"),
+  //       ),
+  //     ];
 
   // SetUp Morning, Afternoon and Evening.
   RxString setupMessage = ''.obs;
@@ -529,7 +675,22 @@ class HomeManagerController extends GetxController {
         selectedGender,
         selectedRole,
         user[0].id,
-        selectedDesignation.value);
+        selectedDesignation.value,
+        fatherName.text,
+        fatherNumber.text,
+       bloodController.text,
+    dobController.text,
+    //  confirmpassword.text,
+  
+    alternateNumberController.text,
+
+    homeAddressController.text,
+    joinedDateController.text,
+        selectMaritalStatus.value,
+    selectdWeek.value,
+    selectedShift.value,
+    selectedDept.value
+        );
     if (status) {
       isLoading.value = false;
       EasyLoading.showSuccess(

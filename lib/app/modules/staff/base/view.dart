@@ -73,10 +73,10 @@ class StaffBase extends StatelessWidget {
                   icon: Image(
                     height: 20.h,
                     width: 40.w,
-                    image: AssetImage(ImageConstant.homeIcon),
+                    image: AssetImage(ImageConstant.clockIcon),
                     fit: BoxFit.contain,
                   ),
-                  label: 'Home'),
+                  label: 'Clock In'),
               // BottomNavigationBarItem(
               //     icon: Icon(
               //       Icons.video_camera_back_outlined,
@@ -100,14 +100,15 @@ class StaffBase extends StatelessWidget {
                   icon: Image(
                     height: 20.h,
                     width: 40.w,
-                    image: AssetImage(ImageConstant.clockIcon),
+                    image: AssetImage(ImageConstant.homeIcon
+                    ),
                     fit: BoxFit.contain,
                   ),
                   // icon: Icon(
                   //   Icons.group,
                   //   size: 24.sp,
                   // ),
-                  label: 'Clock In'),
+                  label: 'Home'),
               BottomNavigationBarItem(
                   icon: Image(
                     height: 20.h,

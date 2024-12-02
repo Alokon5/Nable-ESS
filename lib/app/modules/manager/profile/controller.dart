@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:nable_ess/app/data/models/leaveModels/lateEarlyModel.dart';
+import 'package:nable_ess/app/data/models/staff_salary_model.dart';
 import 'package:nable_ess/app/data/models/userDetailsModel.dart';
 import 'package:nable_ess/app/routes/route.dart';
 
@@ -21,7 +23,7 @@ class ProfileManagerController extends GetxController {
   StorageProvider storageProvider = StorageProvider();
 
   APIsProvider apIsProvider = APIsProvider();
-
+    var lateEarlyListNew = <LateEarlyModel>[].obs;
   var user = <UserModel>[].obs;
   var checkInList = <CheckIn>[].obs;
   var chekOutList = <CheckOut>[].obs;
@@ -30,6 +32,8 @@ class ProfileManagerController extends GetxController {
   var leaveList = <LeaveListModel>[].obs;
   var requestedLeave = <RequestedLeaveModel>[].obs;
   var newlyRequestedList = <RequestedLeaveModel>[].obs;
+  var salaryList = <StaffSalaryModel>[].obs;
+  var newRequestLateList = <LateEarlyModel>[].obs;
   User? aboutUser;
   RxString attendance = '0'.obs;
   var firstNameCotroller = TextEditingController();
@@ -50,7 +54,7 @@ class ProfileManagerController extends GetxController {
       child: Text("ds"),
     )
   ];
-
+  var errorMessage = ''.obs;
   var isLoading = false.obs;
   var editLoading = false.obs;
 
@@ -67,9 +71,79 @@ class ProfileManagerController extends GetxController {
     await getCurrentMothAttendence();
     await getLeaveList();
     await getRequestedLeave();
-
+    await fetchSalaryData();
+    await fetchLateEarlyData();
     super.onInit();
+  } 
+
+
+Future<void> fetchLateEarlyData() async {
+   var token = user.isNotEmpty ? user[0].token : '';
+    try {
+      isLoading(true); // Set loading to true while fetching data
+      final data = await apIsProvider.getLateEarlyData(token); // Call the API provider function
+
+       if (data!.length.toInt() != 0) {
+      lateEarlyListNew.assignAll(data);
+      for (int i = 0; i < lateEarlyListNew.length; i++) {
+        if (lateEarlyListNew[i].seen == false) {
+          var object = lateEarlyListNew.removeAt(i);
+          lateEarlyListNew.insert(0, object);
+          newRequestLateList.add(object);
+        } else if (requestedLeave[i].status == "Pending") {
+          var object = requestedLeave.removeAt(i);
+          requestedLeave.insert(0, object);
+        }
+      }
+      // print("list of requested----${list}");
+    } else {}
+
+      if (data.isEmpty) {
+        errorMessage.value = "No data found";  // If the returned data is empty
+      } else {
+        lateEarlyListNew.value = data; // Update the observable list with the fetched data
+        errorMessage.value = ""; // Clear any previous error message
+      }
+    } catch (e) {
+      // Handle any errors during the fetch operation
+      errorMessage.value = "Error: $e"; // Set error message
+    } finally {
+      isLoading(false); // Set loading to false once the data is fetched or an error occurs
+    }
   }
+
+
+   Future<void> fetchSalaryData() async {
+    isLoading(true);  
+
+    var token = user.isNotEmpty ? user[0].token : '';
+
+    // if (token.isEmpt) {
+    //   errorMessage.value = 'No token found. Please login again.';
+    //   isLoading(false);
+    //   return;
+    // }
+
+    try {
+   
+      var fetchedData = await APIsProvider().getSalaryList(token);
+   print("controller ${token}");
+     
+      if (fetchedData.isNotEmpty) {
+        salaryList.value = fetchedData;  
+        print("Salary list updated: ${salaryList.toString()}"); 
+      } else {
+        print("No salary data found.");
+        errorMessage.value = 'No salary data found';
+      }
+    } catch (e) {
+      print("Error fetching salary data: $e");
+      errorMessage.value = 'Error: $e'; 
+    } finally {
+      isLoading(false);  
+    }
+  }
+
 
   Future fetchUserDetails() async {
     isLoading.value = true;

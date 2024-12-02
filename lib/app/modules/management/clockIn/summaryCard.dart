@@ -25,7 +25,7 @@ class SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        height: 120.h,
+        height: 130.h,
         width: double.infinity,
         child: Column(
           children: [

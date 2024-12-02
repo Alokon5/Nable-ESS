@@ -199,16 +199,20 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(
-                      "Login",
-                      style: TextStyle(color: Colors.white, fontSize: 40),
+                    Center(
+                      child: Text(
+                        "Login",
+                        style: TextStyle(color: Colors.white, fontSize: 40),
+                      ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "Welcome To Nable ESS",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    Center(
+                      child: Text(
+                        "Welcome To Nable ESS",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
                     ),
                   ],
                 ),

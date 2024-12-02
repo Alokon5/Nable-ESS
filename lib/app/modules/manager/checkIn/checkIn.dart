@@ -118,18 +118,18 @@ class CheckInView extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.w),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Image(
-                          height: 100.h,
-                          width: 100.w,
-                          image: AssetImage(ImageConstant.Logo),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(left: 10.w),
+                    //   child: Align(
+                    //     alignment: Alignment.topLeft,
+                    //     child: Image(
+                    //       height: 100.h,
+                    //       width: 100.w,
+                    //       image: AssetImage(ImageConstant.Logo),
+                    //       fit: BoxFit.contain,
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 5.h,
                     ),

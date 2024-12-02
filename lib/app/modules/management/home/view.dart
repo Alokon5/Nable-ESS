@@ -93,18 +93,18 @@ class HomeManagement extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Image(
-                            height: 100.h,
-                            width: 100.w,
-                            image: AssetImage(ImageConstant.Logo),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 10.w),
+                      //   child: Align(
+                      //     alignment: Alignment.topLeft,
+                      //     child: Image(
+                      //       height: 100.h,
+                      //       width: 100.w,
+                      //       image: AssetImage(ImageConstant.Logo),
+                      //       fit: BoxFit.contain,
+                      //     ),
+                      //   ),
+                      // ),
                       //createUser
                       // Padding(
                       //   padding: EdgeInsets.only(top: 23.h, bottom: 8.h),
@@ -334,272 +334,272 @@ class HomeManagement extends StatelessWidget {
                               style: Theme.of(context).textTheme.titleMedium),
                         ),
                       ),
-                      Obx(() {
-                        return homeManagementController.allVideos.length != 0
-                            ? Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10.h, horizontal: 10.w),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Get.to(() => ShortsMainScreen(
-                                                  anVideoObject:
-                                                      homeManagementController
-                                                          .allVideos[0],
-                                                  allVideoList:
-                                                      homeManagementController
-                                                          .allVideos,
-                                                  index: 0,
-                                                ));
-                                          },
-                                          child: Card(
-                                            elevation: 2,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        25.r)),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 12.h,
-                                                ),
-                                                SizedBox(
-                                                  width: 140.w,
-                                                ),
-                                                Container(
-                                                  child: Image(
-                                                    height: 100.h,
-                                                    image: NetworkImage(
-                                                      APIsProvider
-                                                              .mediaBaseUrl +
-                                                          homeManagementController
-                                                              .allVideos[0]
-                                                              .thumbnail
-                                                              .toString(),
-                                                    ),
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 7.h,
-                                                ),
-                                                Container(
-                                                  width: 100.w,
-                                                  child: Center(
-                                                    child: Text(
-                                                      "${homeManagementController.allVideos[0].title} ",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodySmall,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 12.h,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Get.to(() => ShortsMainScreen(
-                                                  allVideoList:
-                                                      homeManagementController
-                                                          .allVideos,
-                                                  index: 1,
-                                                ));
-                                          },
-                                          child: Card(
-                                            elevation: 2,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        25.r)),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 12.h,
-                                                ),
-                                                SizedBox(
-                                                  width: 140.w,
-                                                ),
-                                                Container(
-                                                  child: Image(
-                                                    height: 100.h,
-                                                    image: NetworkImage(
-                                                      APIsProvider
-                                                              .mediaBaseUrl +
-                                                          homeManagementController
-                                                              .allVideos[1]
-                                                              .thumbnail
-                                                              .toString(),
-                                                    ),
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 7.h,
-                                                ),
-                                                Container(
-                                                  width: 100.w,
-                                                  child: Center(
-                                                    child: Text(
-                                                      "${homeManagementController.allVideos[1].title} ",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodySmall,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 12.h,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10.h, horizontal: 10.w),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Get.to(() => ShortsMainScreen(
-                                                  allVideoList:
-                                                      homeManagementController
-                                                          .allVideos,
-                                                  index: 2,
-                                                ));
-                                          },
-                                          child: Card(
-                                            elevation: 2,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        25.r)),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 12.h,
-                                                ),
-                                                SizedBox(
-                                                  width: 140.w,
-                                                ),
-                                                Container(
-                                                  child: Image(
-                                                    height: 100.h,
-                                                    image: NetworkImage(
-                                                      APIsProvider
-                                                              .mediaBaseUrl +
-                                                          homeManagementController
-                                                              .allVideos[2]
-                                                              .thumbnail
-                                                              .toString(),
-                                                    ),
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 7.h,
-                                                ),
-                                                Container(
-                                                  width: 100.w,
-                                                  child: Center(
-                                                    child: Text(
-                                                      "${homeManagementController.allVideos[2].title} ",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodySmall,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 12.h,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Get.to(() => ShortsMainScreen(
-                                                  allVideoList:
-                                                      homeManagementController
-                                                          .allVideos,
-                                                  index: 3,
-                                                ));
-                                          },
-                                          child: Card(
-                                            elevation: 2,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        25.r)),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 12.h,
-                                                ),
-                                                SizedBox(
-                                                  width: 140.w,
-                                                ),
-                                                Container(
-                                                  child: Image(
-                                                    height: 100.h,
-                                                    image: NetworkImage(
-                                                      APIsProvider
-                                                              .mediaBaseUrl +
-                                                          homeManagementController
-                                                              .allVideos[3]
-                                                              .thumbnail
-                                                              .toString(),
-                                                    ),
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 7.h,
-                                                ),
-                                                Container(
-                                                  width: 100.w,
-                                                  child: Center(
-                                                    child: Text(
-                                                      "${homeManagementController.allVideos[3].title} ",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodySmall,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 12.h,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              )
-                            : Center(
-                                child: CircularProgressIndicator(
-                                color: ColorConstant.primaryDark,
-                              ));
-                      })
+                      // Obx(() {
+                      //   return homeManagementController.allVideos.isNotEmpty
+                      //       ? Column(
+                      //           children: [
+                      //             Padding(
+                      //               padding: EdgeInsets.symmetric(
+                      //                   vertical: 10.h, horizontal: 10.w),
+                      //               child: Row(
+                      //                 mainAxisAlignment:
+                      //                     MainAxisAlignment.spaceEvenly,
+                      //                 children: [
+                      //                   InkWell(
+                      //                     onTap: () {
+                      //                       // Get.to(() => ShortsMainScreen(
+                      //                       //       anVideoObject:
+                      //                       //           homeManagementController
+                      //                       //               .allVideos[0],
+                      //                       //       allVideoList:
+                      //                       //           homeManagementController
+                      //                       //               .allVideos,
+                      //                       //       index: 0,
+                      //                       //     ));
+                      //                     },
+                      //                     child: Card(
+                      //                       elevation: 2,
+                      //                       shape: RoundedRectangleBorder(
+                      //                           borderRadius:
+                      //                               BorderRadius.circular(
+                      //                                   25.r)),
+                      //                       child: Column(
+                      //                         children: [
+                      //                           SizedBox(
+                      //                             height: 12.h,
+                      //                           ),
+                      //                           SizedBox(
+                      //                             width: 140.w,
+                      //                           ),
+                      //                           // Container(
+                      //                           //   child: Image(
+                      //                           //     height: 100.h,
+                      //                           //     image: NetworkImage(
+                      //                           //       APIsProvider
+                      //                           //               .mediaBaseUrl +
+                      //                           //           homeManagementController
+                      //                           //               .allVideos[0]
+                      //                           //               .thumbnail
+                      //                           //               .toString(),
+                      //                           //     ),
+                      //                           //     fit: BoxFit.fill,
+                      //                           //   ),
+                      //                           // ),
+                      //                           SizedBox(
+                      //                             height: 7.h,
+                      //                           ),
+                      //                           Container(
+                      //                             width: 100.w,
+                      //                             child: Center(
+                      //                               child: Text(
+                      //                                 "${homeManagementController.allVideos[0].title} ",
+                      //                                 style: Theme.of(context)
+                      //                                     .textTheme
+                      //                                     .bodySmall,
+                      //                               ),
+                      //                             ),
+                      //                           ),
+                      //                           SizedBox(
+                      //                             height: 12.h,
+                      //                           ),
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                   ),
+                      //                   InkWell(
+                      //                     onTap: () {
+                      //                       Get.to(() => ShortsMainScreen(
+                      //                             allVideoList:
+                      //                                 homeManagementController
+                      //                                     .allVideos,
+                      //                             index: 1,
+                      //                           ));
+                      //                     },
+                      //                     child: Card(
+                      //                       elevation: 2,
+                      //                       shape: RoundedRectangleBorder(
+                      //                           borderRadius:
+                      //                               BorderRadius.circular(
+                      //                                   25.r)),
+                      //                       child: Column(
+                      //                         children: [
+                      //                           SizedBox(
+                      //                             height: 12.h,
+                      //                           ),
+                      //                           SizedBox(
+                      //                             width: 140.w,
+                      //                           ),
+                      //                           Container(
+                      //                             child: Image(
+                      //                               height: 100.h,
+                      //                               image: NetworkImage(
+                      //                                 APIsProvider
+                      //                                         .mediaBaseUrl +
+                      //                                     homeManagementController
+                      //                                         .allVideos[1]
+                      //                                         .thumbnail
+                      //                                         .toString(),
+                      //                               ),
+                      //                               fit: BoxFit.fill,
+                      //                             ),
+                      //                           ),
+                      //                           SizedBox(
+                      //                             height: 7.h,
+                      //                           ),
+                      //                           Container(
+                      //                             width: 100.w,
+                      //                             child: Center(
+                      //                               child: Text(
+                      //                                 "${homeManagementController.allVideos[1].title} ",
+                      //                                 style: Theme.of(context)
+                      //                                     .textTheme
+                      //                                     .bodySmall,
+                      //                               ),
+                      //                             ),
+                      //                           ),
+                      //                           SizedBox(
+                      //                             height: 12.h,
+                      //                           ),
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                   )
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //             Padding(
+                      //               padding: EdgeInsets.symmetric(
+                      //                   vertical: 10.h, horizontal: 10.w),
+                      //               child: Row(
+                      //                 mainAxisAlignment:
+                      //                     MainAxisAlignment.spaceEvenly,
+                      //                 children: [
+                      //                   InkWell(
+                      //                     onTap: () {
+                      //                       Get.to(() => ShortsMainScreen(
+                      //                             allVideoList:
+                      //                                 homeManagementController
+                      //                                     .allVideos,
+                      //                             index: 2,
+                      //                           ));
+                      //                     },
+                      //                     child: Card(
+                      //                       elevation: 2,
+                      //                       shape: RoundedRectangleBorder(
+                      //                           borderRadius:
+                      //                               BorderRadius.circular(
+                      //                                   25.r)),
+                      //                       child: Column(
+                      //                         children: [
+                      //                           SizedBox(
+                      //                             height: 12.h,
+                      //                           ),
+                      //                           SizedBox(
+                      //                             width: 140.w,
+                      //                           ),
+                      //                           Container(
+                      //                             child: Image(
+                      //                               height: 100.h,
+                      //                               image: NetworkImage(
+                      //                                 APIsProvider
+                      //                                         .mediaBaseUrl +
+                      //                                     homeManagementController
+                      //                                         .allVideos[2]
+                      //                                         .thumbnail
+                      //                                         .toString(),
+                      //                               ),
+                      //                               fit: BoxFit.fill,
+                      //                             ),
+                      //                           ),
+                      //                           SizedBox(
+                      //                             height: 7.h,
+                      //                           ),
+                      //                           Container(
+                      //                             width: 100.w,
+                      //                             child: Center(
+                      //                               child: Text(
+                      //                                 "${homeManagementController.allVideos[2].title} ",
+                      //                                 style: Theme.of(context)
+                      //                                     .textTheme
+                      //                                     .bodySmall,
+                      //                               ),
+                      //                             ),
+                      //                           ),
+                      //                           SizedBox(
+                      //                             height: 12.h,
+                      //                           ),
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                   ),
+                      //                   InkWell(
+                      //                     onTap: () {
+                      //                       Get.to(() => ShortsMainScreen(
+                      //                             allVideoList:
+                      //                                 homeManagementController
+                      //                                     .allVideos,
+                      //                             index: 3,
+                      //                           ));
+                      //                     },
+                      //                     child: Card(
+                      //                       elevation: 2,
+                      //                       shape: RoundedRectangleBorder(
+                      //                           borderRadius:
+                      //                               BorderRadius.circular(
+                      //                                   25.r)),
+                      //                       child: Column(
+                      //                         children: [
+                      //                           SizedBox(
+                      //                             height: 12.h,
+                      //                           ),
+                      //                           SizedBox(
+                      //                             width: 140.w,
+                      //                           ),
+                      //                           // Container(
+                      //                           //   child: Image(
+                      //                           //     height: 100.h,
+                      //                           //     image: NetworkImage(
+                      //                           //       APIsProvider
+                      //                           //               .mediaBaseUrl +
+                      //                           //           homeManagementController
+                      //                           //               .allVideos[3]
+                      //                           //               .thumbnail
+                      //                           //               .toString(),
+                      //                           //     ),
+                      //                           //     fit: BoxFit.fill,
+                      //                           //   ),
+                      //                           // ),
+                      //                           SizedBox(
+                      //                             height: 7.h,
+                      //                           ),
+                      //                           // Container(
+                      //                           //   width: 100.w,
+                      //                           //   child: Center(
+                      //                           //     child: Text(
+                      //                           //       "${homeManagementController.allVideos[3].title} ",
+                      //                           //       style: Theme.of(context)
+                      //                           //           .textTheme
+                      //                           //           .bodySmall,
+                      //                           //     ),
+                      //                           //   ),
+                      //                           // ),
+                      //                           SizedBox(
+                      //                             height: 12.h,
+                      //                           ),
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                   )
+                      //                 ],
+                      //               ),
+                      //             )
+                      //           ],
+                      //         )
+                      //       : Center(
+                      //           child: CircularProgressIndicator(
+                      //           color: ColorConstant.primaryDark,
+                      //         ));
+                      // })
                       // Obx(() {
                       //   // return Expanded(child: Container(color: ColorConstant.backgroud,));
                       //   return Expanded(

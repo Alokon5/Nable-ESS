@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:nable_ess/app/modules/staff/documents/lateEarlyForm.dart';
 
 import '../../../core/values/colors.dart';
@@ -18,9 +19,21 @@ class LateEarlyScreenM extends StatelessWidget {
 
   final profileStaffController = Get.put(StaffProfileController());
 
+  String convertToAmPmFormat(String time24Hour) {
+    final parts = time24Hour.split(':');
+    int hour = int.parse(parts[0]);
+    int minute = int.parse(parts[1]);
+
+    String amPm = (hour >= 12) ? 'PM' : 'AM';
+    if (hour > 12) hour -= 12;
+    if (hour == 0) hour = 12;
+
+    return "${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')} $amPm";
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Get.to(() => LateEarlyFormM());
@@ -48,159 +61,111 @@ class LateEarlyScreenM extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      body: Obx(
-        () {
-          // var data = profileStaffController.lateEarlyList;
-          return profileStaffController.lateEarlyList.length != 0
-              ? ListView.builder(
-                  itemCount: profileStaffController.lateEarlyList.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 24.w, vertical: 10.h),
-                          child: InkWell(
-                            onTap: () {
-                              // Get.to(
-                              //   ShowLeaveHistoryData(),
-                              //   arguments:
-                              //       staffProfileController.leaveList[index],
-                              // );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  color: Color(0xefff0f4f9)),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 8.w),
-                                        child: SizedBox(
-                                          height: 50.h,
-                                          child: profileStaffController
-                                                          .user[0].photoUrl ==
-                                                      null ||
-                                                  profileStaffController
-                                                          .user[0].photoUrl ==
-                                                      ""
-                                              ? Image(
-                                                  image: AssetImage(
-                                                      ImageConstant
-                                                          .maleProfile),
-                                                )
-                                              : CircleAvatar(
-                                                  radius: 25.r,
-                                                  backgroundColor:
-                                                      ColorConstant.backgroud,
-                                                  backgroundImage: NetworkImage(
-                                                      APIsProvider
-                                                              .mediaBaseUrl +
-                                                          profileStaffController
-                                                              .user[0].photoUrl
-                                                              .toString()),
-                                                ),
+      body: Obx(() {
+
+        // if(profileStaffController.lateEarlyListManger.isEmpty){
+        //      CircularNotchedRectangle();
+        // }
+        // Check if lateEarlyList has any data
+        return profileStaffController.lateEarlyListManger.isNotEmpty
+            ? ListView.builder(
+                itemCount: profileStaffController.lateEarlyListManger.length,
+                itemBuilder: (context, index) {
+                  // Access the data for the current item
+                  var lateEarlyData = profileStaffController.lateEarlyListManger[index];
+                  var user = profileStaffController.user[0]; // Assuming you have a user list
+                  var status = profileStaffController.lateEarlyListManger[index].status;
+                  return  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+                    child: InkWell(
+                      onTap: () {
+                        // Navigate to detailed view if needed
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xefff0f4f9),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(10.w),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 8.w),
+                                child: SizedBox(
+                                  height: 50.h,
+                                  child: user.photoUrl == null || user.photoUrl == ""
+                                      ? Image(image: AssetImage(ImageConstant.maleProfile))
+                                      : CircleAvatar(
+                                          radius: 25.r,
+                                          backgroundColor: ColorConstant.backgroud,
+                                          backgroundImage: NetworkImage(
+                                              APIsProvider.mediaBaseUrl + user.photoUrl.toString()),
                                         ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 10.h, left: 5.w),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  "Late/Early",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyLarge,
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 20.w),
-                                                  child: Text(
-                                                    "Date: ${profileStaffController.lateEarlyList[index].date.toString()}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodySmall!
-                                                        .copyWith(),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 7.h, left: 5.w),
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 9.w),
-                                                  child: Text(
-                                                    "Time: ${profileStaffController.lateEarlyList[index].time.toString()}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodySmall,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                      child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 10.w, vertical: 10.h),
-                                    child: Text(
-                                      "Description : ${profileStaffController.lateEarlyList[index].description}",
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ))
-                                ],
+                                ),
                               ),
-                            ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                         lateEarlyData.user!.firstName,
+                                          style: Theme.of(context).textTheme.bodyLarge,
+                                        ),
+                                        Text("Status:${lateEarlyData.status}",style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(
+                                                    color: profileStaffController
+                                                        .getColorForLeaveStatus(
+                                                            status.toString()),
+                                                  ),)
+                                      ],
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+  "Date: ${DateFormat('dd-MMM-yyyy').format(DateTime.parse(lateEarlyData.date.toString()))}",
+  style: Theme.of(context).textTheme.bodySmall,
+  overflow: TextOverflow.ellipsis,
+),
+                                    // SizedBox(width: 5.h,),
+                                    Text(
+                                      "Time: ${convertToAmPmFormat(lateEarlyData.time)}",
+                                      style: Theme.of(context).textTheme.bodySmall,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                      ],
+                                    ),
+                                    
+                                    SizedBox(height: 8.h),
+                                    Text(
+                                      "Reason : ${lateEarlyData.reason}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(color: ColorConstant.grey),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        // Expanded(
-                        //     child: SizedBox(
-                        //   child: Text("data"),
-                        // ))
-                        // Expanded(
-                        //     child: Text(profileStaffController
-                        //         .lateEarlyList[index].description
-                        //         .toString()))
-                        // Text("${profileStaffController.lateEarlyList.length}")
-                        // Container(
-                        //   child: Text("data"),
-                        // )
-                      ],
-                    );
-                  },
-                )
-              : Center(
-                  child: Text(
-                    "No Data found",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: ColorConstant.grey),
-                  ),
-                );
-        },
-      ),
+                      ),
+                    ),
+                  );
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator()
+              );
+      }),
     );
   }
 }

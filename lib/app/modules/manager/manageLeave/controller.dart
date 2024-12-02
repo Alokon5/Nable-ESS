@@ -1,5 +1,11 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:nable_ess/app/data/models/leaveModels/leaveListModel.dart';
 import 'package:nable_ess/app/data/models/leaveModels/leaveTypeModel.dart';
@@ -19,7 +25,7 @@ class LeaveController extends GetxController {
   var requestedLeave = <RequestedLeaveModel>[].obs;
   // var filtered = <RequestedLeaveModel>[].obs;
 
-  @override
+  @override 
   void onInit() async {
     isLoading.value = false;
     StorageProvider storageProvider = StorageProvider();
@@ -180,13 +186,17 @@ class LeaveController extends GetxController {
 
   void applyForLeave() async {
     isLoading.value = true;
+    File? attachment = selectedImage.value != null ? File(selectedImage.value!.path) : null;
+
     var applyStatus = await apIsProvider.applyLeave(
         user[0].token,
         leaveTitle.text,
         leaveDescription.text,
         dateFrom.text,
         dateTo.text,
-        selecteLeaveType);
+        selecteLeaveType,
+       attachment
+         );
     print(applyStatus);
     if (applyStatus == true) {
       leaveTitle.clear();
@@ -198,5 +208,78 @@ class LeaveController extends GetxController {
     }
 
     isLoading.value = false;
+  }
+
+
+
+    final ImagePicker _imagePicker = ImagePicker();
+  Rxn<XFile?> selectedImage = Rxn<XFile?>();
+
+  String? imagePath;
+  var imagePathVar = ''.obs;
+  var imageName = ''.obs;
+ 
+  pickImageFromGallery() async {
+    final pickedImage = await _imagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 25);
+
+    selectedImage.value = pickedImage;
+    if (pickedImage != null) {
+      imagePath = pickedImage.path;
+      imagePathVar.value = pickedImage.path;
+      imageName.value = pickedImage.name.toString();
+    }
+  }
+
+  var pdfPath = ''.obs;
+  var pdfName = ''.obs;
+  var pdfUploading = false.obs;
+  Future<void> pickPDF() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+
+      if (result != null) {
+        String fileName = (result.files.single.name);
+        printInfo(
+            info:
+                'file name ------${fileName} length of name ::::::${fileName.length}');
+        pdfName.value = truncateFileName(fileName, 14);
+
+        pdfPath.value = result.files.single.path.toString();
+      } else {
+        EasyLoading.showSuccess("File Not found");
+      }
+    } on PlatformException catch (e) {
+      print('Error picking PDF: $e');
+    }
+  }
+
+  String truncateFileName(String fileName, int maxLength) {
+    if (fileName.length <= maxLength) {
+      return fileName; // Return the original file name if it's already within the limit
+    } else {
+      // Extract the first 10 characters
+      // String truncatedName = fileName.substring(0, maxLength);
+      // return "${truncatedName}.pdf";
+
+      String fileNameWithoutExtension = fileName.split('.').first;
+
+      // Extract the file extension
+      String fileExtension = fileName.split('.').last;
+
+      // Calculate the remaining characters for the name (after considering the extension)
+      int remainingCharacters = maxLength -
+          (fileExtension.length + 1); // +1 for the dot before the extension
+
+      // Truncate the name, leaving enough space for the extension
+      String truncatedName =
+          fileNameWithoutExtension.substring(0, remainingCharacters);
+
+      // Combine the truncated name with the extension
+      return "$truncatedName.$fileExtension";
+    }
   }
 }

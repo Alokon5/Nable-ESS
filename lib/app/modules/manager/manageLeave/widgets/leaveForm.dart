@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:nable_ess/app/core/values/colors.dart';
 import 'package:nable_ess/app/data/models/leaveModels/leaveTypeModel.dart';
 import 'package:nable_ess/app/modules/manager/manageLeave/controller.dart';
+import 'package:open_file/open_file.dart';
 
 import '../../../../core/values/images.dart';
 import '../../../../data/providers/apis_provider.dart';
@@ -384,6 +385,63 @@ class LeaveForm extends StatelessWidget {
                 //     ],
                 //   ),
                 // ),
+                 
+                  Padding(
+                      padding: EdgeInsets.only(
+                          top: 18.0.h, left: 20.w, bottom: 5.0.h),
+                      child: Text(
+                        "Upload Document or Image",
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge!
+                            .copyWith(color: Colors.black),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 20.w,
+                      ),
+                      child: Obx(() {
+                        return Row(
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  showDialogUpload(context);
+                                },
+                                child: Text("Choose file")),
+                            TextButton(
+                                onPressed: () async {
+                                  leaveController.imageName != ''
+                                      ? OpenFile.open(leaveController
+                                          .imagePathVar.value)
+                                      : OpenFile.open(
+                                          leaveController.pdfPath.value);
+                                },
+                                child:
+                                    leaveController.selectedImage.value != null ?
+                                                // "" ||
+                                        //     staffProfileController.imageName
+                                        //             .toString() !=
+                                        //         ''
+                                        // ? (staffProfileController.pdfName
+                                        //             .toString() !=
+                                        //         ""
+                                        //     ? Text(staffProfileController
+                                        //         .pdfName.value)
+                                        //     
+                                         Text(
+                                                leaveController
+                                                    .truncateFileName(
+                                                        leaveController
+                                                            .imageName.value,
+                                                        17),
+                                              )
+                                        : Text("File not selected yet."))
+                          ],
+                        );
+                      }),
+                    ),
+
                 SizedBox(
                   height: 20.h,
                 ),
@@ -428,6 +486,40 @@ class LeaveForm extends StatelessWidget {
           ),
         ),
       )),
+    );
+  }
+  showDialogUpload(context) {
+    Get.dialog(
+      AlertDialog(
+        title: Text('Select File Type ',
+            style: Theme.of(context).textTheme.bodyLarge),
+        actions: [
+          TextButton(
+            child: Text('Cancel', style: Theme.of(context).textTheme.bodySmall),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          ElevatedButton(
+            child: Text('PDF', style: Theme.of(context).textTheme.bodySmall),
+            onPressed: () {
+              leaveController.imageName.value = "";
+              leaveController.pickPDF();
+
+              Get.back();
+            },
+          ),
+          ElevatedButton(
+            child: Text('Image', style: Theme.of(context).textTheme.bodySmall),
+            onPressed: () {
+              leaveController.pdfName.value = '';
+              leaveController.pickImageFromGallery();
+
+              Get.back();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

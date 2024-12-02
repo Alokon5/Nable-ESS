@@ -12,7 +12,9 @@ import 'package:get_storage/get_storage.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:nable_ess/app/data/models/leaveModels/lateEarlyModel.dart';
 import 'package:nable_ess/app/data/models/leaveModels/leaveListModel.dart';
+import 'package:nable_ess/app/data/models/staff_salary_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/models/allUserDocList.dart';
@@ -28,17 +30,20 @@ import '../../../routes/route.dart';
 class StaffProfileController extends GetxController {
   StorageProvider storageProvider = StorageProvider();
   APIsProvider apIsProvider = APIsProvider();
-
+  var salaryList = <StaffSalaryModel>[].obs;
+  var lateEarlyListNew = <LateEarlyModel>[].obs;
   var user = <UserModel>[].obs;
   var checkInList = <CheckIn>[].obs;
   var chekOutList = <CheckOut>[].obs;
   var lateEarlyList = <LateEary>[].obs;
+  var lateEarlyListManger = <LateEarlyModel>[].obs;
   // var documents = <Document>[].obs;
   var documents = <AllDocList>[].obs;
   var desgnationList = <DesignationModel>[].obs;
   var joinedDate = ''.obs;
   var designationName = "".obs;
   var docIndex = ''.obs;
+  var errorMessage = ''.obs;
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -83,7 +88,117 @@ class StaffProfileController extends GetxController {
     await getCurrentMonthAttendence();
     await getCurrentMonthLeaveApproved();
     await getDocument();
+    await fetchSalaryData();
+   await fetchLateEarlyData();
+   await fetchLateEarlyDataManger();
   }
+
+
+requestDeclineApi(id) async {
+    isLoading.value = true;
+    var status = await apIsProvider.requestLateDeclineApi(user[0].token, id);
+    if (status == true) {
+       await fetchLateEarlyData();
+      // await getRequestedLeave();
+      await updateSeenStatus(id);
+      isLoading.value = false;
+      Get.snackbar("Declined", "Successfull declined request");
+      // print("list of requested----${list}");
+    } else {
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
+requestApprovelApi(id) async {
+    isLoading.value = true;
+    var status = await apIsProvider.requestLateApprovelApi(user[0].token, id);
+    if (status == true) {
+      await fetchLateEarlyData();
+      await updateSeenStatus(id);
+      isLoading.value = false;
+      Get.snackbar("Approved", "Successfull approved request");
+      // print("list of requested----${list}");
+    } else {
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
+  updateSeenStatus(id) async {
+    
+    isLoading.value = true;
+
+    var status = await apIsProvider.seenLateApi(user[0].token, id);
+    if (status == true) {
+      await fetchLateEarlyData();
+      isLoading.value = false;
+      // Get.snackbar("Approved", "Successfull approved request");
+      // print("list of requested----${list}");
+    } else {
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
+  // updateLateSeenStatus(id) async {
+  //   isLoading.value = true;
+
+  //   var status = await apIsProvider.seenLateApi(user[0].token, id);
+  //   if (status == true) {
+  //     await fetchLateEarlyData();
+  //     isLoading.value = false;
+  //     // Get.snackbar("Approved", "Successfull approved request");
+  //     // print("list of requested----${list}");
+  //   } else {
+  //     isLoading.value = false;
+  //   }
+  //   isLoading.value = false;
+  // }
+
+  //late early controller
+ Future<void> fetchLateEarlyData() async {
+  print(" of late ealry");
+   var token = user.isNotEmpty ? user[0].token : '';
+    try {
+      isLoading(true); // Set loading to true while fetching data
+      final data = await apIsProvider.getLateEarlyData(token); 
+      // Call the API provider function
+
+      if (data.isEmpty) {
+        errorMessage.value = "No data found";  // If the returned data is empty
+      } else {
+        lateEarlyListNew.value = data; // Update the observable list with the fetched data
+        errorMessage.value = ""; // Clear any previous error message
+      }
+    } catch (e) {
+      // Handle any errors during the fetch operation
+      errorMessage.value = "Error: $e"; // Set error message
+    } finally {
+      isLoading(false); // Set loading to false once the data is fetched or an error occurs
+    }
+  }
+
+  Future<void> fetchLateEarlyDataManger() async {
+   var token = user.isNotEmpty ? user[0].token : '';
+    try {
+      isLoading(true); // Set loading to true while fetching data
+      final data = await apIsProvider.getLateEarlyDataManger(token); // Call the API provider function
+
+      if (data.isEmpty) {
+        errorMessage.value = "No data found";  // If the returned data is empty
+      } else {
+        lateEarlyListManger.value = data; // Update the observable list with the fetched data
+        errorMessage.value = ""; // Clear any previous error message
+      }
+    } catch (e) {
+      // Handle any errors during the fetch operation
+      errorMessage.value = "Error: $e"; // Set error message
+    } finally {
+      isLoading(false); // Set loading to false once the data is fetched or an error occurs
+    }
+  }
+
 
   getDocument() async {
     documentData.value = "Loading...";
@@ -99,6 +214,7 @@ class StaffProfileController extends GetxController {
   }
 
   Future getLeaveList() async {
+    print(" of late ealry");
     var list = await apIsProvider.getLeaveList(user[0].token);
     print(list);
     if (list!.length.toInt() != 0) {
@@ -109,34 +225,68 @@ class StaffProfileController extends GetxController {
     } else {}
   }
 
+
+
+
   var lateEarlyLoading = false.obs;
-  posteLateEarlyData() async {
-    print("this controller value");
-    print(lateEarlyDropdownController.text);
-     print(lateEarlyDropdownController.text);
-    printInfo(info: "here is calling");
-    lateEarlyLoading.value = true;
+ posteLateEarlyData() async {
+  print("this controller value");
+  print(lateEarlyDropdownController.text);
+  printInfo(info: "here is calling");
+  // print(selectedImage.value!.path);
+  lateEarlyLoading.value = true;
 
-    var status = await apIsProvider.postLateEarlyData(
-      user[0].token,
-      lateEarlyDropdownController.text,
-      lateEarlyDateController.text,
-      lateEarlyTimeController.text,
-      lateEarlyReasonController.text,
-    );
+  // Convert the 12-hour format time in lateEarlyTimeController to 24-hour format
+  String time12Hour = lateEarlyTimeController.text; // Example: "02:30 PM"
+  String time24Hour = convertTo24HourFormat(time12Hour);
 
-    if (status == true) {
-      lateEarlyDateController.clear();
-      lateEarlyTimeController.clear();
-      lateEarlyReasonController.clear();
-      lateEarlyDropdownController.clear();
-      lateEarlyLoading.value = false;
-      updateDetails();
-      Get.back();
-    } else {
-      lateEarlyLoading.value = false;
-    }
+  var status = await apIsProvider.postLateEarlyData(
+    user[0].token,
+    lateEarlyDropdownController.text,
+    lateEarlyDateController.text,
+    time24Hour, // Send the 24-hour format time here
+    lateEarlyReasonController.text,
+    selectedImage.value // Send image path if available
+    // p
+  );
+
+  if (status == true) {
+    lateEarlyDateController.clear();
+    lateEarlyTimeController.clear();
+    lateEarlyReasonController.clear();
+    lateEarlyDropdownController.clear();
+    lateEarlyLoading.value = false;
+    selectedImage.value = null;
+    updateDetails();
+    Get.back();
+  } else {
+    lateEarlyLoading.value = false;
   }
+}
+
+// Helper function to convert 12-hour time to 24-hour format
+String convertTo24HourFormat(String time12Hour) {
+  final regex = RegExp(r'(\d+):(\d+)\s*(AM|PM)');
+  final match = regex.firstMatch(time12Hour);
+
+  if (match != null) {
+    int hour = int.parse(match.group(1)!);
+    int minute = int.parse(match.group(2)!);
+    String amPm = match.group(3)!;
+
+    if (amPm == 'PM' && hour != 12) {
+      hour += 12;
+    } else if (amPm == 'AM' && hour == 12) {
+      hour = 0;
+    }
+
+    return "${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}";
+  } else {
+    print("Invalid time format");
+    return time12Hour; // Return original time if format is invalid
+  }
+}
+
 
   Future getLeaveTypeList() async {
     var list = await apIsProvider.getLeaveTypeList(user[0].token);
@@ -442,17 +592,32 @@ class StaffProfileController extends GetxController {
     // print("userDetails of first name ------${userDetails.user!.firstName}");
   }
 
-  dateTimeFormator(dateTimeStr) {
-    DateTime dateTime = DateTime.parse(dateTimeStr);
-    // print(dateTimeStr);
-
-    String formattedTime = DateFormat('h:mm a').format(dateTime);
-    String date = "${DateFormat('dd-MMM-yyyy').format(dateTime)}";
-    // print("date -=--=-$date");
-    // print("time -=--=-$formattedTime");
-    var formatedDateTime = DateTimeModel(date: date, time: formattedTime);
-    return formatedDateTime;
+ DateTimeModel dateTimeFormator(String? dateTimeStr) {
+  if (dateTimeStr == null || dateTimeStr.isEmpty) {
+    print("Error: dateTimeStr is null or empty.");
+    return DateTimeModel(date: "Invalid Date", time: "Invalid Time");
   }
+
+  try {
+    // Parse the input string into a DateTime object
+    DateTime dateTime = DateTime.parse(dateTimeStr);
+
+    // Format the time and date
+    String formattedTime = DateFormat('h:mm a').format(dateTime);
+    String date = DateFormat('dd-MMM-yyyy').format(dateTime);
+
+    // Log for debugging
+    print("Formatted Date: $date");
+    print("Formatted Time: $formattedTime");
+
+    // Return the formatted result as a DateTimeModel
+    return DateTimeModel(date: date, time: formattedTime);
+  } catch (e) {
+    print("Error parsing dateTimeStr: $e");
+    return DateTimeModel(date: "Invalid Date", time: "Invalid Time");
+  }
+}
+
 
   // Is on time or late history checkin checkout data
   bool isOnTimeCheckIn(DateTime checkInTime) {
@@ -491,28 +656,77 @@ class StaffProfileController extends GetxController {
     isLoading.value = false;
   }
 
-  // leave request applying
+
+  //salary controller 
+  Future<void> fetchSalaryData() async {
+     print("salary is runnig");
+
+    var token = user.isNotEmpty ? user[0].token : '';
+
+    // if (token.isEmpt) {
+    //   errorMessage.value = 'No token found. Please login again.';
+    //   isLoading(false);
+    //   return;
+    // }
+
+    try {
+    // isLoading(true);
+      var fetchedData = await apIsProvider.getSalaryList(token);
+   print("controller ${token}");
+     print(fetchedData);
+      if (fetchedData.isNotEmpty) {
+        salaryList.value = fetchedData;  
+        print("Salary list updated: "); 
+      } else {
+        print("No salary data found.");
+        errorMessage.value = 'No salary data found';
+      }
+    } catch (e) {
+      print("Error fetching salary data: $e");
+      errorMessage.value = 'Error: $e'; 
+    } finally {
+      isLoading(false);  
+    }
+  }
+
+
   void applyForLeave() async {
+  try {
     isLoading.value = true;
+
+    File? attachment = selectedImage.value != null ? File(selectedImage.value!.path) : null;
+
     var applyStatus = await apIsProvider.applyLeave(
-        user[0].token,
-        leaveTitleController.text,
-        leaveDescriptionController.text,
-        dateFromController.text,
-        dateToController.text,
-        selecteLeaveType);
-    print(applyStatus);
+      user[0].token,
+      leaveTitleController.text,
+      leaveDescriptionController.text,
+      dateFromController.text,
+      dateToController.text,
+      selecteLeaveType,
+      attachment,
+    );
+
     if (applyStatus == true) {
-      isLoading.value = false;
+      // Show success message and navigate to leave history
       Get.snackbar("Success", "Requested for leave");
       getLeaveList();
-      // Get.back();
       Get.offNamed(AppRoutes.leaveHistoryStaff);
+
+      // Clear input fields only after a successful API call
+      leaveTitleController.clear();
+      leaveDescriptionController.clear();
+      dateFromController.clear();
+      dateToController.clear();
+      selectedImage.value = null; // Clear selected image
+    } else {
+      Get.snackbar("Error", "Failed to apply for leave. Please try again.");
     }
-    leaveTitleController.clear();
-    leaveDescriptionController.clear();
-    dateFromController.clear();
-    dateToController.clear();
-    isLoading.value = false;
+  } catch (e) {
+    print("Error in applyForLeave: $e");
+    Get.snackbar("Error", "An unexpected error occurred.");
+  } finally {
+    isLoading.value = false; // Ensure loading state is reset
   }
+}
+
 }

@@ -29,7 +29,7 @@ class AppRoutes {
   static const editProfileManager = '/EditProfileManager';
   static const checkListScreen = '/CheckList';
   static const leaveBase = '/LeaveBase';
-
+  static const lateEarlyBase = '/LateEarlyBase';
   static const leaveApply = '/LeaveForm';
   static const leaveHistory = '/LeaveHistory';
   static const leaveNotification = '/LeaveHistory';

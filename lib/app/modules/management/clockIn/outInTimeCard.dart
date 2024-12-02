@@ -121,16 +121,18 @@ class OutInTimeCard extends StatelessWidget {
                       ),
                       Column(
                         children: [
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 2.h),
-                            child: Text(
-                              "Work Hours In a Day",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall!
-                                  .copyWith(
-                                      color: ColorConstant.grey,
-                                      fontWeight: FontWeight.w500),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 2.h),
+                              child: Text(
+                                "Work Hours In a Day",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall!
+                                    .copyWith(
+                                        color: ColorConstant.grey,
+                                        fontWeight: FontWeight.w500),
+                              ),
                             ),
                           ),
                           Text("${totalWorkHrs}",

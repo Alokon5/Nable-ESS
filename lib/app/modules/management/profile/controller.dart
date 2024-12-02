@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:nable_ess/app/data/models/allEmployeesModel.dart';
+import 'package:nable_ess/app/data/models/leaveModels/lateEarlyModel.dart';
 import 'package:nable_ess/app/data/models/userDetailsModel.dart';
 import 'package:nable_ess/app/modules/management/usersDetails/controller.dart';
 
@@ -31,18 +32,23 @@ class ProfileManagementController extends GetxController {
   RxInt totalUser = 0.obs;
   RxInt totalPresent = 0.obs;
   RxInt totalAbsents = 0.obs;
+  var errorMessage = ''.obs;
+   
 
   var requestedLeave = <RequestedLeaveModel>[].obs;
+  var newRequestLeave = <RequestedLeaveModel>[].obs;
   var documentList = <AllDocList>[].obs;
   var tempDoc = <AllDocList>[].obs;
   var matchedDocList = <AllDocList>[].obs;
   var finalDocList = <UserBasedDocModel>[].obs;
   var LateEarlyData = <LateEary>[].obs;
+   var lateEarlyListNew = <LateEarlyModel>[].obs; 
 
   var user = <UserModel>[].obs;
   var allEmployeesList = <Datum>[].obs;
   UserModel? userModel;
   var newRequestList = <RequestedLeaveModel>[].obs;
+  var newRequestLateList =<LateEarlyModel>[].obs; 
 
   var isLoading = false.obs;
   void setIsLoading(bool value) {
@@ -63,7 +69,53 @@ class ProfileManagementController extends GetxController {
     setIsLoading(false);
     await getAllRequestedLeave();
     await updateDetails();
+    await fetchLateEarlyData();
   }
+
+
+
+
+  Future<void> fetchLateEarlyData() async {
+   var token = user.isNotEmpty ? user[0].token : '';
+    try {
+      newRequestLateList.clear();
+      isLoading(true); // Set loading to true while fetching data
+      final data = await apIsProvider.getLateEarlyData(token); 
+      
+      
+
+
+    if (data!.length.toInt() != 0) {
+      lateEarlyListNew.assignAll(data);
+      for (int i = 0; i < lateEarlyListNew.length; i++) {
+        if (lateEarlyListNew[i].seen == false) {
+          var object = lateEarlyListNew.removeAt(i);
+          lateEarlyListNew.insert(0, object);
+          newRequestLateList.add(object);
+        } else if (lateEarlyListNew[i].status == "Pending") {
+          var object = lateEarlyListNew.removeAt(i);
+          lateEarlyListNew.insert(0, object);
+        }
+      }
+      // print("list of requested----${list}");
+    } else {}
+
+      // Call the API provider function
+
+      if (data.isEmpty) {
+        errorMessage.value = "No data found";  // If the returned data is empty
+      } else {
+        lateEarlyListNew.value = data; // Update the observable list with the fetched data
+        errorMessage.value = ""; // Clear any previous error message
+      }
+    } catch (e) {
+      // Handle any errors during the fetch operation
+      errorMessage.value = "Error: $e"; // Set error message
+    } finally {
+      isLoading(false); // Set loading to false once the data is fetched or an error occurs
+    }
+  }
+  
 
   Future fetchUserDetails() async {
     setIsLoading(true);
@@ -105,6 +157,80 @@ class ProfileManagementController extends GetxController {
     isLoadingForEmployeeDetails.value = value;
   }
 
+
+  //late early 
+    requestLateApprovelApi(id) async {
+    isLoading.value = true;
+    var status = await apIsProvider.requestLateApprovelApi(user[0].token, id);
+    if (status == true) {
+      // await getAllRequestedLeave();
+      // await updateSeenStatus(id);
+      await fetchLateEarlyData();
+      isLoading.value = false;
+      // Get.back();
+      Get.snackbar("Approved", "Successfull approved request");
+      // print("list of requested----${list}");
+    } else {
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
+    requestLateDeclineApi(id) async {
+    isLoading.value = true;
+    var status = await apIsProvider.requestLateDeclineApi(user[0].token, id);
+    if (status == true) {
+      print("status-----$status");
+      // await getAllRequestedLeave();
+      // await updateSeenStatus(id);
+     await fetchLateEarlyData();
+      isLoading.value = false;
+      Get.snackbar("Declined", "Successfull declined request");
+      // Get.back();
+      // print("list of requested----${list}");
+    } else {
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
+  //late ealry details
+     requestLateDetailApprovelApi(id) async {
+    isLoading.value = true;
+    var status = await apIsProvider.requestLateApprovelApi(user[0].token, id);
+    if (status == true) {
+      // await getAllRequestedLeave();
+      // await updateSeenStatus(id);
+      await fetchLateEarlyData();
+      isLoading.value = false;
+      Get.back();
+      Get.snackbar("Approved", "Successfull approved request");
+      // print("list of requested----${list}");
+    } else {
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
+  //late early detail decline
+      requestLateDetailDeclineApi(id) async {
+    isLoading.value = true;
+    var status = await apIsProvider.requestLateDeclineApi(user[0].token, id);
+    if (status == true) {
+      print("status-----$status");
+      // await getAllRequestedLeave();
+      // await updateSeenStatus(id);
+     await fetchLateEarlyData();
+      isLoading.value = false;
+      Get.snackbar("Declined", "Successfull declined request");
+      Get.back();
+      // print("list of requested----${list}");
+    } else {
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
   requestApprovelApi(id) async {
     isLoading.value = true;
     var status = await apIsProvider.requestApprovelApi(user[0].token, id);
@@ -136,12 +262,29 @@ class ProfileManagementController extends GetxController {
     isLoading.value = false;
   }
 
-  updateSeenStatus(id) async {
+  updateLateSeenStatus(id) async {
     isLoading.value = true;
+    print("this is con seen");
+    var status = await apIsProvider.seenLateApi(user[0].token, id);
+    if (status == true) {
+      // await getAllRequestedLeave();
+     await  fetchLateEarlyData();
+      isLoading.value = false;
+      // Get.snackbar("Approved", "Successfull approved request");
+      // print("list of requested----${list}");
+    } else {
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
 
+   updateSeenStatus(id) async {
+    isLoading.value = true;
+    print("this is con seen");
     var status = await apIsProvider.seenApi(user[0].token, id);
     if (status == true) {
       await getAllRequestedLeave();
+      // fetchLateEarlyData();
       isLoading.value = false;
       // Get.snackbar("Approved", "Successfull approved request");
       // print("list of requested----${list}");
@@ -442,5 +585,17 @@ class ProfileManagementController extends GetxController {
       Get.snackbar("Faild", "Faild to Update profile!");
     }
     isLoading.value = false;
+  }
+
+   Color getColorForLeaveStatus(String leaveStatus) {
+    if (leaveStatus == "Approved") {
+      return Colors.green;
+    } else if (leaveStatus == "Pending") {
+      return Colors.blue;
+    } else if (leaveStatus == "Declined") {
+      return Colors.red;
+    } else {
+      return Colors.black; // Default color
+    }
   }
 }

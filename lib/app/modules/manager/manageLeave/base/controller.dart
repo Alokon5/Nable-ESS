@@ -62,5 +62,5 @@ var newlyRequestedList = <RequestedLeaveModel>[].obs;
   }
 
   List<Widget> widgetOptions =
-      <Widget>[LeaveForm(), History(), LeaveNotification()].obs;
+      <Widget>[History(),LeaveForm(), LeaveNotification()].obs;
 }

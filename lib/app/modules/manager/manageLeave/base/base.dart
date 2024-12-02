@@ -53,16 +53,16 @@ class LeaveBaseView extends StatelessWidget {
           items: [
             BottomNavigationBarItem(
                 icon: Icon(
+                  Icons.history,
+                  size: 24.sp,
+                ),
+                label: 'History'),
+            BottomNavigationBarItem(
+                icon: Icon(
                   Icons.quora,
                   size: 24.sp,
                 ),
                 label: 'Apply'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.history,
-                  size: 24.sp,
-                ),
-                label: 'Hostory'),
             BottomNavigationBarItem(
                 icon: badges.Badge(
                   position: badges.BadgePosition.topEnd(top: -2.h, end: -2.h),

@@ -24,7 +24,7 @@ class ClockInView extends StatelessWidget {
                   ),
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, // Number of columns in the grid
+                      crossAxisCount: 2, // Number of columns in the grid
                     ),
                     itemCount: clockInController.allEmployeesList.length,
                     itemBuilder: (context, index) {
@@ -77,6 +77,7 @@ class ClockInView extends StatelessWidget {
                               Expanded(
                                 child: Container(
                                   width: 100.w,
+                                  
                                   // decoration: BoxDecoration(
                                   //     // border: Border.all(),
                                   //     ),

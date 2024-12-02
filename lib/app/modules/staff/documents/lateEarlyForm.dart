@@ -168,19 +168,30 @@ class LateEarlyForm extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () async {
-                    final selectedTime = TimeOfDay.now();
-                    final selectedTimeNow = await showTimePicker(
-                        context: context, initialTime: selectedTime);
-                    if (selectedTimeNow != null) {
-                      int hour = selectedTimeNow.hour;
-                      int minute = selectedTimeNow.minute;
-                      String amPm = (hour < 12) ? 'AM' : 'PM';
-                      if (hour >= 12) {
-                        if (hour > 12) hour -= 12;
-                      } else if (hour == 0) hour = 12;
-                      profileStaffController.lateEarlyTimeController.text =
-                          "${hour}:${minute.toString().padLeft(2, '0')} $amPm";
-                    }
+  final selectedTime = TimeOfDay.now();
+  final selectedTimeNow = await showTimePicker(
+      context: context, initialTime: selectedTime);
+
+  if (selectedTimeNow != null) {
+    // Store time in 24-hour format for backend
+    // String time24Hour = "${selectedTimeNow.hour}:${selectedTimeNow.minute.toString().padLeft(2, '0')}";
+
+    // Format time in 12-hour format for display in the app
+    int hour = selectedTimeNow.hour;
+    int minute = selectedTimeNow.minute;
+    String amPm = (hour < 12) ? 'AM' : 'PM';
+    if (hour >= 12) {
+      if (hour > 12) hour -= 12;
+    } else if (hour == 0) hour = 12;
+    
+    // Set the display text
+    profileStaffController.lateEarlyTimeController.text =
+       "${hour}:${minute.toString().padLeft(2, '0')} $amPm";
+    //  print(time24Hour);
+    // Send `time24Hour` to the backend
+    // await sendTimeToBackend(time24Hour);
+  }
+
                   },
                   child: IgnorePointer(
                     child: TextFormField(
@@ -273,24 +284,27 @@ class LateEarlyForm extends StatelessWidget {
                                           profileStaffController.pdfPath.value);
                                 },
                                 child:
-                                    profileStaffController.pdfName.toString() !=
-                                                "" ||
-                                            profileStaffController.imageName
-                                                    .toString() !=
-                                                ''
-                                        ? (profileStaffController.pdfName
-                                                    .toString() !=
-                                                ""
-                                            ? Text(profileStaffController
-                                                .pdfName.value)
-                                            : Text(
+                                    profileStaffController.selectedImage.value != null ?
+
+                                    //this profileStaffCOntroller ka bad pdfName.toString()
+                                        //         "" ||
+                                        //     profileStaffController.imageName
+                                        //             .toString() !=
+                                        //         ''
+                                        // ? (profileStaffController.pdfName
+                                        //             .toString() !=
+                                        //         ""
+                                        //     ? Text(profileStaffController
+                                        //         .pdfName.value)
+                                        //     :
+                                             Text(
                                               profileStaffController
                                                
                                                     .truncateFileName(
                                                         profileStaffController
                                                             .imageName.value,
                                                         17),
-                                              ))
+                                              )
                                         : Text("File not selected yet."))
                           ],
                         );
@@ -312,6 +326,7 @@ class LateEarlyForm extends StatelessWidget {
                                     .lateEarlyFormKey.currentState!
                                     .validate()) {
                                   await profileStaffController.posteLateEarlyData();
+                                  await profileStaffController.fetchLateEarlyData();
                                 } else {
                                   Get.snackbar("Empty", "Some fields may be empty?");
                                 }

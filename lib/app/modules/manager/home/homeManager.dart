@@ -365,20 +365,20 @@ class HomeManager extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Image(
-                            height: 100.h,
-                            width: 100.w,
-                            image: AssetImage(ImageConstant.Logo),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 10.w),
+                      //   child: Align(
+                      //     alignment: Alignment.topLeft,
+                      //     child: Image(
+                      //       height: 100.h,
+                      //       width: 100.w,
+                      //       image: AssetImage(ImageConstant.Logo),
+                      //       fit: BoxFit.contain,
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(
-                        height: 5.h,
+                        height: 20.h,
                       ),
                       Obx(
                         () => Padding(
@@ -646,7 +646,7 @@ class HomeManager extends StatelessWidget {
                       //         : Center(child: Text("No Video"))),
 
                       Obx(() {
-                        return homeManagerController.yourVideoList.length != 0
+                        return homeManagerController.yourVideoList.isNotEmpty
                             ? Column(
                                 children: [
                                   Padding(

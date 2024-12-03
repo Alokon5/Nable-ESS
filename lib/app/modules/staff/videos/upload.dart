@@ -164,10 +164,10 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                               );
                             },
                             child: Center(
-                              child: Text("Add Video"),
+                              child: Text("Add Video",style: TextStyle(color: ColorConstant.buttonText),),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorConstant.primary,
+                              backgroundColor: ColorConstant.button,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(11),
                               ),

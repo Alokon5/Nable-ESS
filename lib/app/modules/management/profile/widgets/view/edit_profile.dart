@@ -20,6 +20,20 @@ class EditProfileManagement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back_ios_rounded),
+          color: Colors.black87,
+        ),
+        centerTitle: true,
+        title: Text(
+          "",
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -156,10 +170,10 @@ class EditProfileManagement extends StatelessWidget {
                               _profileManagementController.editProfile();
                             },
                             child: Center(
-                              child: Text("Save"),
+                              child: Text("Save",style: TextStyle(color: ColorConstant.buttonText),),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorConstant.primary,
+                              backgroundColor: ColorConstant.button,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(11),
                               ),

@@ -98,18 +98,18 @@ class DocumentListScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.w),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Image(
-                          height: 100.h,
-                          width: 100.w,
-                          image: AssetImage(ImageConstant.Logo),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(left: 10.w),
+                    //   child: Align(
+                    //     alignment: Alignment.topLeft,
+                    //     child: Image(
+                    //       height: 100.h,
+                    //       width: 100.w,
+                    //       image: AssetImage(ImageConstant.Logo),
+                    //       fit: BoxFit.contain,
+                    //     ),submit
+                    //   ),
+                    // ),
                     Divider(),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -117,12 +117,12 @@ class DocumentListScreen extends StatelessWidget {
                         height: 35.h,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: Color(0xff4472c4),
+                            color: ColorConstant.button,
                             borderRadius: BorderRadius.circular(6.r)),
                         child: Center(
                           child: Text(
                             "${profileStaffController.documents.length} Documents",
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style:TextStyle(color: ColorConstant.buttonText),
                           ),
                         ),
                       ),
@@ -181,7 +181,7 @@ class DocumentListScreen extends StatelessWidget {
                                           child: Container(
                                             width: 36.w,
                                             decoration: BoxDecoration(
-                                                color: Color(0xff4472c4),
+                                                color: ColorConstant.button,
                                                 border: Border.all(
                                                     width: 1.w,
                                                     color: ColorConstant
@@ -201,7 +201,7 @@ class DocumentListScreen extends StatelessWidget {
                                   profileStaffController.docIndex.value ==
                                           index.toString()
                                       ? SizedBox(
-                                          height: 70.h,
+                                          height: 40.h,
                                           width: double.infinity,
                                           child: Row(
                                             mainAxisAlignment:
@@ -212,7 +212,7 @@ class DocumentListScreen extends StatelessWidget {
                                                 height: double.infinity,
                                                 width: 100.w,
                                                 decoration: BoxDecoration(
-                                                  color: Color(0xff4472c4),
+                                                  color: ColorConstant.button,
                                                   borderRadius:
                                                       BorderRadius.only(
                                                           topLeft: Radius
@@ -243,64 +243,64 @@ class DocumentListScreen extends StatelessWidget {
                                                           //     ));
                                                         },
                                                         child: Text("View")),
-                                                    InkWell(
-                                                        onTap: () {
-                                                          Get.snackbar(
-                                                              "Unreachable",
-                                                              "You can't edit ${profileStaffController.documents[index].documentName.toString()} document");
-                                                          // printInfo(
-                                                          //     info:
-                                                          //         "Edit.................");
-                                                          // profileStaffController
-                                                          //         .documentNameController
-                                                          //         .text =
-                                                          //     profileStaffController
-                                                          //         .documents[
-                                                          //             index]
-                                                          //         .documentName
-                                                          //         .toString();
-                                                          // profileStaffController
-                                                          //         .pdfPath
-                                                          //         .value =
-                                                          //     profileStaffController
-                                                          //         .documents[
-                                                          //             index]
-                                                          //         .document
-                                                          //         .toString();
-                                                          // Get.dialog(
-                                                          //   showUploadDialog(
-                                                          //       profileStaffController,
-                                                          //       Get.context!,
-                                                          //       "Update Document",
-                                                          //       "Update",
-                                                          //       profileStaffController
-                                                          //           .documents[
-                                                          //               index]
-                                                          //           .id!
-                                                          //           .toInt()),
-                                                          // );
-                                                        },
-                                                        child: Text("Edit")),
-                                                    InkWell(
-                                                        onTap: () {
-                                                          Get.snackbar(
-                                                              "Unreachable",
-                                                              "You can't delete ${profileStaffController.documents[index].documentName.toString()} document");
-                                                          // logoutdialog(
-                                                          //     context,
-                                                          //     profileStaffController,
-                                                          //     profileStaffController
-                                                          //         .documents[
-                                                          //             index]
-                                                          //         .id!
-                                                          //         .toInt(),
-                                                          //     profileStaffController
-                                                          //         .documents[
-                                                          //             index]
-                                                          //         .documentName
-                                                          //         .toString());
-                                                        },
-                                                        child: Text("Delete")),
+                                                    // InkWell(
+                                                    //     onTap: () {
+                                                    //       Get.snackbar(
+                                                    //           "Unreachable",
+                                                    //           "You can't edit ${profileStaffController.documents[index].documentName.toString()} document");
+                                                    //       // printInfo(
+                                                    //       //     info:
+                                                    //       //         "Edit.................");
+                                                    //       // profileStaffController
+                                                    //       //         .documentNameController
+                                                    //       //         .text =
+                                                    //       //     profileStaffController
+                                                    //       //         .documents[
+                                                    //       //             index]
+                                                    //       //         .documentName
+                                                    //       //         .toString();
+                                                    //       // profileStaffController
+                                                    //       //         .pdfPath
+                                                    //       //         .value =
+                                                    //       //     profileStaffController
+                                                    //       //         .documents[
+                                                    //       //             index]
+                                                    //       //         .document
+                                                    //       //         .toString();
+                                                    //       // Get.dialog(
+                                                    //       //   showUploadDialog(
+                                                    //       //       profileStaffController,
+                                                    //       //       Get.context!,
+                                                    //       //       "Update Document",
+                                                    //       //       "Update",
+                                                    //       //       profileStaffController
+                                                    //       //           .documents[
+                                                    //       //               index]
+                                                    //       //           .id!
+                                                    //       //           .toInt()),
+                                                    //       // );
+                                                    //     },
+                                                    //     child: Text("Edit")),
+                                                    // InkWell(
+                                                    //     onTap: () {
+                                                    //       Get.snackbar(
+                                                    //           "Unreachable",
+                                                    //           "You can't delete ${profileStaffController.documents[index].documentName.toString()} document");
+                                                    //       // logoutdialog(
+                                                    //       //     context,
+                                                    //       //     profileStaffController,
+                                                    //       //     profileStaffController
+                                                    //       //         .documents[
+                                                    //       //             index]
+                                                    //       //         .id!
+                                                    //       //         .toInt(),
+                                                    //       //     profileStaffController
+                                                    //       //         .documents[
+                                                    //       //             index]
+                                                    //       //         .documentName
+                                                    //       //         .toString());
+                                                    //     },
+                                                    //     child: Text("Delete")),
                                                   ],
                                                 ),
                                               )

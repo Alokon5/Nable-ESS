@@ -19,7 +19,7 @@ class LateEarlyForm extends StatelessWidget {
   Widget build(BuildContext context) {
     printInfo(info: "this is ApplyLeaveForm staff");
     return Scaffold(
-      appBar: AppBar(
+       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Get.back();
@@ -29,7 +29,7 @@ class LateEarlyForm extends StatelessWidget {
         ),
         centerTitle: true,
         title: Text(
-          "",
+          "Apply For Late/Early",
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
@@ -41,22 +41,22 @@ class LateEarlyForm extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20.h),
-                Container(
-                  height: 40.h,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Color(0xff4472c4),
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Late/Early",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 40.h),
+               
+                // Container(
+                //   height: 40.h,
+                //   width: double.infinity,
+                //   decoration: BoxDecoration(
+                //     color: Color(0xff4472c4),
+                //     borderRadius: BorderRadius.circular(6.r),
+                //   ),
+                //   child: Center(
+                //     child: Text(
+                //       "Late/Early",
+                //       style: Theme.of(context).textTheme.titleMedium,
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(height: 40.h),
                 
                 // Late / Early Dropdown
                 Padding(
@@ -311,7 +311,7 @@ class LateEarlyForm extends StatelessWidget {
                       }),
                     ),
 
-                SizedBox(height: 20.h),
+                SizedBox(height: 8.h),
 
                 // Submit Button
                 Obx(() {
@@ -331,7 +331,7 @@ class LateEarlyForm extends StatelessWidget {
                                   Get.snackbar("Empty", "Some fields may be empty?");
                                 }
                               },
-                              child: Center(child: Text("Submit")),
+                              child: Center(child: Text("Submit",style: TextStyle(color: ColorConstant.buttonText ),)),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: ColorConstant.button,
                                 shape: RoundedRectangleBorder(

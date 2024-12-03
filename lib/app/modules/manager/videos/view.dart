@@ -29,7 +29,7 @@ class StaffList extends StatelessWidget {
         },
         child: CircleAvatar(
             radius: 25.r,
-            backgroundColor: ColorConstant.primary,
+            backgroundColor: ColorConstant.button,
             child: Icon(
               Icons.add,
               color: Colors.white,

@@ -44,7 +44,7 @@ class UsersScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(13.r)),
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: ColorConstant.primary,
+                                  color: ColorConstant.button,
                                   borderRadius: BorderRadius.circular(13.r)),
                               height: 30.h,
                               child: Center(
@@ -78,7 +78,7 @@ class UsersScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(13.r)),
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: ColorConstant.primary,
+                                  color: ColorConstant.button,
                                   borderRadius: BorderRadius.circular(13.r)),
                               height: 30.h,
                               child: Center(
@@ -110,7 +110,7 @@ class UsersScreen extends StatelessWidget {
               },
               child: CircleAvatar(
                 radius: 25.r,
-                backgroundColor: ColorConstant.primary,
+                backgroundColor: ColorConstant.button,
                 child: Icon(
                   Icons.add,
                   color: Colors.white,
@@ -123,7 +123,7 @@ class UsersScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: false,
-        backgroundColor: ColorConstant.primary,
+        backgroundColor: ColorConstant.buttonText,
         title: Text(
           "   Employees",
           style: TextStyle(fontSize: 14.sp),
@@ -137,7 +137,7 @@ class UsersScreen extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.r),
-                      border: Border.all(color: Colors.white, width: 1.w)),
+                      border: Border.all(color: ColorConstant.button, width: 1.w)),
                   child: Obx(() {
                     return Center(
                       child: DropdownSearch<String>(
@@ -151,7 +151,7 @@ class UsersScreen extends StatelessWidget {
                           return Text(
                             selectedItem.toString(),
                             style:
-                                TextStyle(color: Colors.white, fontSize: 14.sp),
+                                TextStyle(color: Colors.blue, fontSize: 14.sp),
                             // style: Theme.of(context)
                             //     .textTheme
                             //     .bodyMedium, // Customize the text style here
@@ -357,7 +357,7 @@ class UsersScreen extends StatelessWidget {
                 )
               : Center(
                   child: CircularProgressIndicator(
-                  color: ColorConstant.primaryDark,
+                  color: ColorConstant.button,
                 ));
         }),
       ),

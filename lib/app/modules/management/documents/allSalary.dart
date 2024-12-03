@@ -32,7 +32,7 @@ class AllSalaryPage extends StatelessWidget {
         child: Obx(() {
           if (managerProfileController.isLoading.value) {
             return Center(
-              child: CircularProgressIndicator(color: ColorConstant.primaryDark),
+              child: CircularProgressIndicator(color: ColorConstant.button),
             );
           }
 
@@ -48,7 +48,7 @@ class AllSalaryPage extends StatelessWidget {
           if (managerProfileController.salaryList.isEmpty) {
             return Center(
               child: Text(
-                'No salary data available.',
+                '',
                 style: TextStyle(fontSize: 16.sp, color: Colors.grey),
               ),
             );

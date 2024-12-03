@@ -443,7 +443,7 @@ class LeaveForm extends StatelessWidget {
                     ),
 
                 SizedBox(
-                  height: 20.h,
+                  height: 8.h,
                 ),
                 Obx(() {
                   return Padding(
@@ -465,7 +465,7 @@ class LeaveForm extends StatelessWidget {
                                 }
                               },
                               child: Center(
-                                child: Text("Submit"),
+                                child: Text("Submit",style: TextStyle(color: ColorConstant.buttonText ),),
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: ColorConstant.button,

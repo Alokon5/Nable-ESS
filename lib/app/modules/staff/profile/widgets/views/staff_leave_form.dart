@@ -375,7 +375,7 @@ class StaffLeaveForm extends StatelessWidget {
                       }),
                     ),
                     SizedBox(
-                      height: 20.h,
+                      height: 8.h,
                     ),
                   ],
                 ),
@@ -403,7 +403,7 @@ class StaffLeaveForm extends StatelessWidget {
                                 }
                               },
                               child: Center(
-                                child: Text("Submit"),
+                                child: Text("Submit",style: TextStyle(color: ColorConstant.buttonText ),),
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: ColorConstant.button,

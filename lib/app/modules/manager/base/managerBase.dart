@@ -92,7 +92,7 @@ class ManagerBase extends StatelessWidget {
             currentIndex: managerBaseController.index.value,
             showUnselectedLabels: false,
             showSelectedLabels: true,
-            selectedItemColor: ColorConstant.complimentary,
+            selectedItemColor: ColorConstant.button,
             items: [
               BottomNavigationBarItem(
                   icon: Image(

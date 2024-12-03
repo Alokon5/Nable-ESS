@@ -24,7 +24,7 @@ class ClockInView extends StatelessWidget {
                   ),
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // Number of columns in the grid
+                      crossAxisCount: 3, // Number of columns in the grid
                     ),
                     itemCount: clockInController.allEmployeesList.length,
                     itemBuilder: (context, index) {
@@ -44,7 +44,7 @@ class ClockInView extends StatelessWidget {
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 10.h),
+                              horizontal: 5.w, vertical: 5.h),
                           child: Column(
                             children: [
                               Container(
@@ -74,24 +74,23 @@ class ClockInView extends StatelessWidget {
                                                 .toString(),
                                       )),
                               ),
-                              Expanded(
-                                child: Container(
-                                  width: 100.w,
-                                  
-                                  // decoration: BoxDecoration(
-                                  //     // border: Border.all(),
-                                  //     ),
-                                  child: Center(
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 6.w),
-                                      child: Text(
-                                        "${clockInController.allEmployeesList[index].firstName} ${clockInController.allEmployeesList[index].lastName}",
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
-                                      ),
+                             
+                              Container(
+                                width: 100.w,
+                                
+                                // decoration: BoxDecoration(
+                                //     // border: Border.all(),
+                                //     ),
+                                child: Center(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 6.w),
+                                    child: Text(
+                                      "${clockInController.allEmployeesList[index].firstName} ${clockInController.allEmployeesList[index].lastName}",
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall,
                                     ),
                                   ),
                                 ),

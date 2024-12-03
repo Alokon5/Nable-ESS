@@ -105,7 +105,7 @@ class PasswordResetScreen extends StatelessWidget {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange[900],
+                      backgroundColor: ColorConstant.button,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(11),
                       ),

@@ -33,12 +33,14 @@ class LateEarlyScreenM extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  
+
     return  Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Get.to(() => LateEarlyFormM());
         },
-        icon: Icon(Icons.upload_file_rounded),
+        icon: Icon(Icons.upload_file_rounded,color: ColorConstant.buttonText,),
         label: Text(
           'Apply',
           style: Theme.of(context)
@@ -163,7 +165,7 @@ class LateEarlyScreenM extends StatelessWidget {
                 },
               )
             : Center(
-                child: CircularProgressIndicator()
+                child: Center(child: Text("No data found"),)
               );
       }),
     );

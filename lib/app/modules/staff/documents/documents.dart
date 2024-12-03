@@ -101,7 +101,7 @@ class DocumentsScreen extends StatelessWidget {
                       //     ),
                       //   ),
                       // ),
-                      SizedBox(height: 100.h,),
+                      SizedBox(height: 1.h,),
                       Divider(),
                       //createUser
                       // Padding(

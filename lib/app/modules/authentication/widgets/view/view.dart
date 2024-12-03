@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:nable_ess/app/core/values/colors.dart';
 
 import 'package:nable_ess/app/core/values/images.dart';
 import 'package:nable_ess/app/modules/authentication/controller.dart';
@@ -166,9 +167,9 @@ class LoginScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             colors: [
-              Colors.orange.shade900,
-              Colors.orange.shade800,
-              Colors.orange.shade400
+              Colors.blue.shade900,
+              Colors.blue.shade800,
+              Colors.blue.shade400
             ],
           ),
         ),
@@ -327,7 +328,7 @@ class LoginScreen extends StatelessWidget {
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(50),
-                                          color: Colors.orange[900]),
+                                          color: ColorConstant.button),
                                       child: Center(
                                         child: Text(
                                           "Login",
@@ -339,7 +340,7 @@ class LoginScreen extends StatelessWidget {
                                     )
                                   : Center(
                                       child: CircularProgressIndicator(
-                                        color: Colors.orange[900],
+                                        color: ColorConstant.button,
                                       ),
                                     ),
                             );

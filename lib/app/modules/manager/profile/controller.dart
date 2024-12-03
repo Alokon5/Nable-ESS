@@ -83,21 +83,21 @@ Future<void> fetchLateEarlyData() async {
       isLoading(true); // Set loading to true while fetching data
       final data = await apIsProvider.getLateEarlyData(token); // Call the API provider function
 
-       if (data!.length.toInt() != 0) {
+        if (data!.length.toInt() != 0) {
       lateEarlyListNew.assignAll(data);
       for (int i = 0; i < lateEarlyListNew.length; i++) {
         if (lateEarlyListNew[i].seen == false) {
           var object = lateEarlyListNew.removeAt(i);
           lateEarlyListNew.insert(0, object);
           newRequestLateList.add(object);
-        } else if (requestedLeave[i].status == "Pending") {
-          var object = requestedLeave.removeAt(i);
-          requestedLeave.insert(0, object);
+        } else if (lateEarlyListNew[i].status == "Pending") {
+          var object = lateEarlyListNew.removeAt(i);
+          lateEarlyListNew.insert(0, object);
         }
       }
       // print("list of requested----${list}");
     } else {}
-
+    
       if (data.isEmpty) {
         errorMessage.value = "No data found";  // If the returned data is empty
       } else {

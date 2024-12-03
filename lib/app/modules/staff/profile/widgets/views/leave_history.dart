@@ -23,7 +23,7 @@ class StaffLeaveHistory extends StatelessWidget {
         onPressed: () {
           Get.to(() => StaffLeaveForm());
         },
-        icon: Icon(Icons.upload_file_rounded),
+        icon: Icon(Icons.upload_file_rounded,color: ColorConstant.buttonText,),
         label: Text(
           'Apply',
           style: Theme.of(context)

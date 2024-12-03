@@ -34,7 +34,7 @@ class StaffProfile extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.only(top: 76.h),
+            padding: EdgeInsets.only(top: 1.h),
             child: Obx(
               () {
                 return profileController.user.length != 0
@@ -47,6 +47,7 @@ class StaffProfile extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Container(
+                                      
                                       height: 263.0.h,
                                       child: Column(
                                         mainAxisAlignment:

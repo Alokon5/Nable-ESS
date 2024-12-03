@@ -29,10 +29,10 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class APIsProvider extends GetConnect {
-  static const apiBaseUrl = "http://192.168.29.39:8001/";
-  static const mediaBaseUrl = "http://192.168.29.39:8001";
-  // static const apiBaseUrl = "https://ess.nablean.com/";
-  // static const mediaBaseUrl = "https://ess.nablean.com";
+  // static const apiBaseUrl = "http://192.168.29.39:8001/";
+  // static const mediaBaseUrl = "http://192.168.29.39:8001";
+  static const apiBaseUrl = "https://ess.nablean.com/";
+  static const mediaBaseUrl = "https://ess.nablean.com";
 
   var createUser = StorageProvider();
 
@@ -899,6 +899,7 @@ class APIsProvider extends GetConnect {
   }
 
   Future<bool?> forgotEmailRequest(String email) async {
+    
     try {
       var res = await post(
         resetEmailRequest,

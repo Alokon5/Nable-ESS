@@ -29,7 +29,7 @@ class LateEarlyFormM extends StatelessWidget {
         ),
         centerTitle: true,
         title: Text(
-          "",
+          "Late / Early",
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
@@ -52,25 +52,25 @@ class LateEarlyFormM extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Container(
-                    height: 40.h,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Color(0xff4472c4),
-                        borderRadius: BorderRadius.circular(6.r)),
-                    child: Center(
-                      child: Text(
-                        "Late/Early",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 40.h,
-                ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 20.w),
+                //   child: Container(
+                //     height: 40.h,
+                //     width: double.infinity,
+                //     decoration: BoxDecoration(
+                //         color: Color(0xff4472c4),
+                //         borderRadius: BorderRadius.circular(6.r)),
+                //     child: Center(
+                //       child: Text(
+                //         "Late/Early",
+                //         style: Theme.of(context).textTheme.titleMedium,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 40.h,
+                // ),
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -360,7 +360,7 @@ class LateEarlyFormM extends StatelessWidget {
                     ),
 
                 SizedBox(
-                  height: 20.h,
+                  height: 8.h,
                 ),
                 Obx(() {
                   return Padding(
@@ -385,7 +385,7 @@ class LateEarlyFormM extends StatelessWidget {
                                     }
                                   },
                                   child: Center(
-                                    child: Text("Submit"),
+                                    child: Text("Submit",style: TextStyle(color: ColorConstant.buttonText ),),
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: ColorConstant.button,

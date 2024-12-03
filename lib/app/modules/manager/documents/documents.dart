@@ -167,18 +167,28 @@ class DocumentsScreen extends StatelessWidget {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Badge.count(
-  count: profileManageMent.newlyRequestedList.length,
-  isLabelVisible: profileManageMent.newlyRequestedList.isNotEmpty,
-  alignment: Alignment.topRight,
-  child: Container(
-    width: 150.w,
-    height: 140.h,
-    child: Center(
-      child: Text("Leave", style: Theme.of(context).textTheme.titleMedium),
-    ),
-  ),
-),
+                                                 badges.Badge(
+                                                  //  badgeContent: Text("${profileManageMent
+                                                  //         .newRequestLateList
+                                                  //         .length}"),
+                                                  position:
+                                                      badges.BadgePosition.topEnd(
+                                                          top: 2.h, end: 2.h),
+                                                  showBadge: profileManageMent
+                                                          .newRequestLateList
+                                                          .length != 0
+                                                  ,
+                                                  child: Container(
+                                                    width: 150.w,
+                                                    height: 140.h,
+                                                    child: Center(
+                                                        child: Text("Leave",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleMedium)),
+                                                  ),
+                                                ),
 
                                               ],
                                             ),
@@ -203,16 +213,14 @@ class DocumentsScreen extends StatelessWidget {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 badges.Badge(
-                                                   badgeContent: Text("${profileManageMent
-                                                          .newRequestLateList
-                                                          .length}"),
+                                                   
                                                   position:
                                                       badges.BadgePosition.topEnd(
                                                           top: 2.h, end: 2.h),
                                                   showBadge: profileManageMent
                                                           .newRequestLateList
-                                                          .length != 0
-                                                  ,
+                                                          .length != 0 ,
+                                                  
                                                   child: Container(
                                                     width: 150.w,
                                                     height: 140.h,

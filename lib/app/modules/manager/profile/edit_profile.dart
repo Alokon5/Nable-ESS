@@ -296,10 +296,10 @@ class EditProfileManager extends StatelessWidget {
                                   managerProfileController.editManagerProfile();
                               },
                               child: Center(
-                                child: Text("Apply"),
+                                child: Text("Apply",style: TextStyle(color: ColorConstant.buttonText ),),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: ColorConstant.primary,
+                                backgroundColor: ColorConstant.button,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(11),
                                 ),

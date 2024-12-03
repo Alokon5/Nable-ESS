@@ -67,7 +67,7 @@ class StaffBase extends StatelessWidget {
             showUnselectedLabels: false,
             showSelectedLabels: true,
             unselectedItemColor: ColorConstant.primary,
-            selectedItemColor: ColorConstant.complimentary,
+            selectedItemColor: ColorConstant.button,
             items: [
               BottomNavigationBarItem(
                   icon: Image(

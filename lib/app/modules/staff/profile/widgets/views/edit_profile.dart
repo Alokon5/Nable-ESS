@@ -31,8 +31,9 @@ class EditProfileStaff extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios_rounded),
           color: Colors.black87,
         ),
+        centerTitle: true,
         title: Text(
-          "",
+          "Edit Profile",
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
@@ -324,7 +325,7 @@ class EditProfileStaff extends StatelessWidget {
                         // ),
                         Padding(
                           padding: EdgeInsets.only(
-                              top: 18.0.h, left: 37.w, bottom: 7.0.h),
+                              top: 5.0.h, left: 37.w, bottom: 7.0.h),
                           child: Text(
                             "Address",
                             style: Theme.of(context)
@@ -359,10 +360,10 @@ class EditProfileStaff extends StatelessWidget {
                                   }
                                 },
                                 child: Center(
-                                  child: Text("Apply"),
+                                  child: Text("Apply",style: TextStyle(color: ColorConstant.buttonText ),),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: ColorConstant.primary,
+                                  backgroundColor: ColorConstant.button,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(11),
                                   ),

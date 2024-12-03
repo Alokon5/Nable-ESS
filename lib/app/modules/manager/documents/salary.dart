@@ -27,7 +27,7 @@ class SalaryScreen extends StatelessWidget {
         ),
         centerTitle: true,
         title: Text(
-          "",
+          "Salary",
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
@@ -120,27 +120,70 @@ class SalaryScreen extends StatelessWidget {
                           managerProfileController.salaryList[index];
 
                       return Card(
-                        margin: EdgeInsets.symmetric(vertical: 8),
-                        child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Display the formatted date on the left
-                              Text(
-                                DateFormat('MMM yyyy').format(salary.salaryMonth),
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              // Display the net salary on the right
-                              Text(
-                                'Net Salary: ${salary.netCurrentSalary}',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
+    margin: EdgeInsets.symmetric(vertical: 8.h),
+    elevation: 4,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.r),
+    ),
+    child: Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Salary Month
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                DateFormat('MMMM yyyy').format(salary.salaryMonth),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              Text(
+                'Net Salary: ${salary.netCurrentSalary} ',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: ColorConstant.primaryDark,
+                    ),
+              ),
+            ],
+          ),
+          SizedBox(height: 8.h),
+
+          // Staff Name
+          Text(
+            '${salary!.staff!.firstName} ${salary!.staff!.lastName} ',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          SizedBox(height: 8.h),
+
+          // Salary Details
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _detailRow('Total Days', salary.totalDays.toString()),
+                  _detailRow('Present Days', salary.presentDays.toString()),
+                  _detailRow('Absent Days', salary.absent.toString()),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _detailRow('Week Offs', salary.weekOff.toString()),
+                  _detailRow('Holidays', salary.holiday.toString()),
+                  _detailRow('Payable Days', salary.payableDays.toString()),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
                     },
                   );
                 }),
@@ -217,3 +260,21 @@ class SalaryScreen extends StatelessWidget {
     );
   }
 }
+
+ Widget _detailRow(String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 2.h),
+      child: Row(
+        children: [
+          Text(
+            '$label: ',
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+          ),
+          Text(
+            value,
+            style: TextStyle(fontSize: 14.sp, color: Colors.black54),
+          ),
+        ],
+      ),
+    );
+  }

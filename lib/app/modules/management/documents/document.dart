@@ -72,18 +72,18 @@ class DocumentUsers extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.w),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Image(
-                        height: 100.h,
-                        width: 100.w,
-                        image: AssetImage(ImageConstant.Logo),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 10.w),
+                  //   child: Align(
+                  //     alignment: Alignment.topLeft,
+                  //     child: Image(
+                  //       height: 100.h,
+                  //       width: 100.w,
+                  //       image: AssetImage(ImageConstant.Logo),
+                  //       fit: BoxFit.contain,
+                  //     ),
+                  //   ),
+                  // ),
                   Divider(),
                   // Padding(
                   //   padding: EdgeInsets.symmetric(horizontal: 28.w),
@@ -162,7 +162,7 @@ class DocumentUsers extends StatelessWidget {
                           },
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 10.h),
+                                horizontal: 5.w, vertical: 5.h),
                             child: Column(
                               children: [
                                 Container(
@@ -194,23 +194,22 @@ class DocumentUsers extends StatelessWidget {
                                                   .toString(),
                                         )),
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    width: 100.w,
-                                    // decoration: BoxDecoration(
-                                    //     // border: Border.all(),
-                                    //     ),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 6.w),
-                                        child: Text(
-                                          "${managementProfileController.finalDocList[index].userFirstName} ${managementProfileController.finalDocList[index].userLastName}",
-                                          textAlign: TextAlign.center,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                        ),
+                                // SizedBox( height: 10.h,),
+                                Container(
+                                  width: 100.w,
+                                  // decoration: BoxDecoration(
+                                  //     // border: Border.all(),
+                                  //     ),
+                                  child: Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 6.w),
+                                      child: Text(
+                                        "${managementProfileController.finalDocList[index].userFirstName} ${managementProfileController.finalDocList[index].userLastName}",
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                       ),
                                     ),
                                   ),

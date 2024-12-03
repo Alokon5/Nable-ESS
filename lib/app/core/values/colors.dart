@@ -9,6 +9,7 @@ class ColorConstant {
   static const complimentaryLight = Color.fromARGB(77, 163, 146, 246);
   static const complimentaryBackground = Color(0xeFF5F7F9);
   static const backgroud = Color(0xeFffffff);
-  static const button = Color(0xeF343F58);
+  static const button = Color(0xef1877F2);
   static const grey = Color(0xeF8A8A8A);
+  static const buttonText =Color(0xeFffffff);
 }

@@ -87,7 +87,7 @@ class otpVerification extends StatelessWidget {
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange[900],
+                            backgroundColor: ColorConstant.button,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(11),
                             ),
@@ -96,7 +96,7 @@ class otpVerification extends StatelessWidget {
                       )
                     : Center(
                         child: CircularProgressIndicator(
-                          color: Colors.orange[900],
+                          color: ColorConstant.button,
                         ),
                       ),
               ),

@@ -1089,10 +1089,10 @@ class _ManagerFormState extends State<ManagerForm> {
                                 }
                               },
                               child: Center(
-                                child: Text("Create Staff"),
+                                child: Text("Create Staff", style: TextStyle(color: ColorConstant.buttonText),),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: ColorConstant.primary,
+                                backgroundColor: ColorConstant.button,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(11),
                                 ),

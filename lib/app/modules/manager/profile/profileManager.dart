@@ -44,7 +44,7 @@ class ProfileManager extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.only(top: 24.h),
+            padding: EdgeInsets.only(top: 1.h),
             child: Obx(() {
               return profileController.user.length != 0
                   ? Column(
